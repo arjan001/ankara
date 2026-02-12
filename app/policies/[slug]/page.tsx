@@ -24,7 +24,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/policies/${slug}`, {
-      cache: "revalidate",
       next: { revalidate: 3600 },
     })
 
@@ -65,7 +64,6 @@ export default async function PolicyPage({ params }: { params: Promise<{ slug: s
 
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/api/policies/${slug}`, {
-      cache: "revalidate",
       next: { revalidate: 3600 },
     })
 
