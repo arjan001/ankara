@@ -6,7 +6,8 @@ import { X, Minus, Plus, ShoppingBag } from "lucide-react"
 import { useCart } from "@/lib/cart-context"
 import { formatPrice } from "@/lib/format"
 import { Button } from "@/components/ui/button"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 
 export function CartDrawer() {
   const { items, removeItem, updateQuantity, totalPrice, isCartOpen, setIsCartOpen } = useCart()
@@ -14,6 +15,7 @@ export function CartDrawer() {
   return (
     <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
       <SheetContent className="w-full sm:max-w-md bg-background text-foreground p-0 flex flex-col">
+        <VisuallyHidden><SheetTitle>Shopping Cart</SheetTitle></VisuallyHidden>
         <div className="flex items-center justify-between p-5 border-b border-border">
           <h2 className="text-lg font-serif font-semibold">Your Cart</h2>
           <button type="button" onClick={() => setIsCartOpen(false)}>

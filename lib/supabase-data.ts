@@ -195,18 +195,19 @@ export async function getPopupOffer(): Promise<Offer | null> {
     .from("popup_offers")
     .select("*")
     .eq("is_active", true)
+    .order("created_at", { ascending: false })
     .limit(1)
-    .single()
 
-  if (!data) return null
+  if (!data || data.length === 0) return null
 
+  const offer = data[0]
   return {
-    id: data.id,
-    title: data.title,
-    description: data.description || "",
-    discount: data.discount_percentage ? `${data.discount_percentage}% OFF` : "",
-    image: data.image_url || "",
-    validUntil: "2026-06-30",
+    id: offer.id,
+    title: offer.title,
+    description: offer.description || "",
+    discount: offer.discount_label || "",
+    image: offer.image_url || "/banners/ankara-dresses-banner.jpg",
+    validUntil: offer.valid_until || "2026-12-31",
   }
 }
 
