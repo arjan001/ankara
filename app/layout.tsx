@@ -26,6 +26,11 @@ export const metadata: Metadata = {
   },
   description:
     "Discover vibrant, ready-made Ankara fashion at Classy Collections. Shop Ankara suits, kimono sets, palazzo pants, and dresses. Premium African prints delivered in Nairobi. Call 0702642324.",
+  icons: {
+    icon: "/favicon.jpg",
+    apple: "/favicon.jpg",
+    shortcut: "/favicon.jpg",
+  },
   keywords: [
     // 70 Core SEO Tags
     "Ankara suits Nairobi", "ready-made Ankara wear", "African print dresses Kenya", "Ankara kimono sets", "Ankara palazzo pants",

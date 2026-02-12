@@ -168,8 +168,17 @@ export function CollectionPage({ collection }: { collection: string }) {
   const { data: allProducts = [] } = useSWR<Product[]>("/api/products", fetcher)
   const { data: categories = [] } = useSWR<Category[]>("/api/categories", fetcher)
 
-  // Filter products by collection
-  const collectionProducts = useMemo(() => allProducts.filter((p) => p.collection === collection), [allProducts, collection])
+  // Filter products by collection (category)
+  const collectionProducts = useMemo(() => {
+    console.log('[v0] Filtering by collection:', { collection, allProducts: allProducts.length })
+    const filtered = allProducts.filter((p) => {
+      const match = p.category?.toLowerCase() === collection.charAt(0).toUpperCase() + collection.slice(1).toLowerCase()
+      if (!match) console.log('[v0] Product category mismatch:', { product: p.name, category: p.category, collection })
+      return match
+    })
+    console.log('[v0] Filtered products:', filtered.length)
+    return filtered
+  }, [allProducts, collection])
 
   const [selectedCategory, setSelectedCategory] = useState("")
   const [sortBy, setSortBy] = useState("newest")

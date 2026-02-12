@@ -104,8 +104,8 @@ export function Navbar() {
                 <Link href="/" className="py-3 text-sm font-medium border-b border-border">Home</Link>
                 <Link href="/shop" className="py-3 text-sm font-medium border-b border-border">Shop All</Link>
                 <p className="pt-3 pb-1 text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Collections</p>
-                <Link href="/shop/men" className="py-2.5 text-sm border-b border-border pl-3">Men</Link>
-                <Link href="/shop/women" className="py-2.5 text-sm border-b border-border pl-3">Women</Link>
+                <Link href="/shop/men" className="py-2.5 text-sm border-b border-border pl-3">Men's Ankara</Link>
+                <Link href="/shop/women" className="py-2.5 text-sm border-b border-border pl-3">Women's Ankara</Link>
                 <p className="pt-3 pb-1 text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Categories</p>
                 {categories.map((cat) => (
                   <Link key={cat.id} href={`/shop?category=${cat.slug}`} className="py-2.5 text-sm border-b border-border pl-3">{cat.name}</Link>
@@ -232,11 +232,9 @@ export function Navbar() {
           <div className="flex items-center justify-center h-12">
             <nav className="flex items-center gap-8">
               <Link href="/" className="text-sm font-medium hover:text-muted-foreground transition-colors">Home</Link>
-              <Link href="/shop" className="text-sm font-medium hover:text-muted-foreground transition-colors">Shop</Link>
-              <Link href="/shop?category=men" className="text-sm font-medium hover:text-muted-foreground transition-colors">Men</Link>
-              <Link href="/shop?category=women" className="text-sm font-medium hover:text-muted-foreground transition-colors">Women</Link>
-              <Link href="/shop?filter=new" className="text-sm font-medium hover:text-muted-foreground transition-colors">New Arrivals</Link>
-              <Link href="/shop?filter=offers" className="text-sm font-medium hover:text-muted-foreground transition-colors">On Offer</Link>
+              <Link href="/shop" className="text-sm font-medium hover:text-muted-foreground transition-colors">Shop All</Link>
+              <Link href="/shop/men" className="text-sm font-medium hover:text-muted-foreground transition-colors">Men</Link>
+              <Link href="/shop/women" className="text-sm font-medium hover:text-muted-foreground transition-colors">Women</Link>
               <Link href="/track-order" className="text-sm font-medium hover:text-muted-foreground transition-colors">Track My Order</Link>
             </nav>
           </div>
