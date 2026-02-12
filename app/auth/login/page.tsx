@@ -116,16 +116,7 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="mt-8 pt-8 border-t border-border">
-          <p className="text-xs text-muted-foreground text-center mb-4">
-            New admin user? Create an account first.
-          </p>
-          <Link href="/auth/register">
-            <Button variant="outline" className="w-full h-11">
-              Create Admin Account
-            </Button>
-          </Link>
-        </div>
+
 
         <div className="mt-6 text-center">
           <Link href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
