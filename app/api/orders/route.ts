@@ -50,14 +50,15 @@ export async function POST(request: NextRequest) {
     const deliveryFee = Math.max(0, Number(body.deliveryFee) || 0)
     const total = Math.max(0, Number(body.total) || 0)
 
-    // Sanitize items
-    const sanitizedItems = body.items.map((item: { productId: string; name: string; price: number; quantity: number; variation?: string; image?: string }) => ({
-      productId: sanitize(item.productId, 50),
-      name: sanitize(item.name, 200),
-      price: Math.max(0, Number(item.price) || 0),
+    // Sanitize items - accept both field name formats from checkout
+    const sanitizedItems = body.items.map((item: Record<string, unknown>) => ({
+      productId: sanitize(String(item.productId || ""), 50),
+      productName: sanitize(String(item.productName || item.name || ""), 200),
+      productImage: item.productImage || item.image ? sanitize(String(item.productImage || item.image || ""), 500) : undefined,
+      variation: item.variation ? sanitize(String(item.variation), 100) : undefined,
       quantity: Math.min(100, Math.max(1, Math.floor(Number(item.quantity) || 1))),
-      variation: item.variation ? sanitize(item.variation, 100) : undefined,
-      image: item.image ? sanitize(item.image, 500) : undefined,
+      unitPrice: Math.max(0, Number(item.unitPrice || item.price) || 0),
+      totalPrice: Math.max(0, Number(item.totalPrice || (Number(item.unitPrice || item.price) || 0) * (Number(item.quantity) || 1))),
     }))
 
     const result = await createOrder({
@@ -85,11 +86,11 @@ export async function POST(request: NextRequest) {
         customerName,
         customerEmail,
         customerPhone,
-        items: sanitizedItems.map((item: { name: string; quantity: number; price: number; variation?: string }) => ({
-          productName: item.name,
+        items: sanitizedItems.map((item: { productName: string; quantity: number; unitPrice: number; totalPrice: number; variation?: string }) => ({
+          productName: item.productName,
           quantity: item.quantity,
-          unitPrice: item.price,
-          totalPrice: item.price * item.quantity,
+          unitPrice: item.unitPrice,
+          totalPrice: item.totalPrice,
           variation: item.variation,
         })),
         subtotal,

@@ -150,8 +150,6 @@ export function CheckoutPage() {
         status: "pending",
       }
 
-      console.log("[v0] Submitting M-PESA order:", payload)
-
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -159,17 +157,13 @@ export function CheckoutPage() {
       })
 
       const data = await res.json()
-      console.log("[v0] M-PESA order response:", res.status, data)
 
       if (!res.ok) {
-        console.error("[v0] M-PESA order error:", data)
         alert("Error placing order: " + (data.error || "Unknown error"))
         setShowMpesa(false)
         return
       }
 
-      // Order created successfully
-      console.log("[v0] Order created:", data.orderNumber)
       setOrderResult({ orderNumber: data.orderNumber, paymentMethod: "mpesa" })
       clearCart()
       setShowMpesa(false)

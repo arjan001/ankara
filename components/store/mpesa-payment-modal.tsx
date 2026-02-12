@@ -49,8 +49,6 @@ export function MpesaPaymentModal({ isOpen, onClose, total, onPaymentConfirmed }
       const codeMatch = mpesaMessage.match(/[A-Z0-9]{10}/)?.[0] || "MPESA-" + Date.now().toString().slice(-6)
       const phoneMatch = mpesaMessage.match(/(?:254|0)\d{9}/)?.[0] || mpesaPhone.trim() || "Not provided"
 
-      console.log("[v0] M-PESA submission:", { code: codeMatch, phone: phoneMatch, messageLength: mpesaMessage.length })
-
       // Call the parent callback to handle payment confirmation
       await new Promise((r) => setTimeout(r, 500)) // Brief delay for UX
       onPaymentConfirmed(codeMatch, phoneMatch, mpesaMessage.trim())
