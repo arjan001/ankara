@@ -24,16 +24,16 @@ function BabyshopNavLink() {
   return (
     <div className="relative group">
       <Link
-        href="/shop/babyshop"
-        className="text-sm font-medium neon-flicker text-pink-600 hover:text-pink-700 transition-colors relative"
+        href="/shop/ankara-suits"
+        className="text-sm font-medium text-primary hover:text-secondary transition-colors"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        Babyshop ✨
+        Premium Ankara
       </Link>
       {showTooltip && (
         <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-foreground text-background px-3 py-2 rounded-sm text-xs whitespace-nowrap z-50 pointer-events-none">
-          Kali-ttos Little Wardrobe
+          Handcrafted Authentic African Fashion
           <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
         </div>
       )}
