@@ -20,18 +20,18 @@ export function OfferBanner() {
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-foreground/50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-transparent" />
             <div className="relative z-10 p-8 lg:p-10">
-              <p className="text-background/70 text-xs tracking-[0.3em] uppercase mb-2">
+              <p className="text-white/70 text-xs tracking-[0.3em] uppercase mb-2">
                 Limited Offer
               </p>
-              <h3 className="text-background text-2xl lg:text-3xl font-serif font-bold">
+              <h3 className="text-white text-2xl lg:text-3xl font-serif font-bold">
                 Ankara Collection Sale
               </h3>
-              <p className="text-background/70 text-sm mt-2 max-w-xs">
+              <p className="text-white/70 text-sm mt-2 max-w-xs">
                 Up to 30% off on selected Ankara dresses. Premium African print fashion, curated for you.
               </p>
-              <div className="inline-flex items-center gap-2 mt-4 text-background text-sm font-medium">
+              <div className="inline-flex items-center gap-2 mt-4 text-white text-sm font-medium">
                 Shop The Sale
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -49,18 +49,18 @@ export function OfferBanner() {
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-foreground/50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-transparent" />
             <div className="relative z-10 p-8 lg:p-10">
-              <p className="text-background/70 text-xs tracking-[0.3em] uppercase mb-2">
+              <p className="text-white/70 text-xs tracking-[0.3em] uppercase mb-2">
                 Just Dropped
               </p>
-              <h3 className="text-background text-2xl lg:text-3xl font-serif font-bold">
+              <h3 className="text-white text-2xl lg:text-3xl font-serif font-bold">
                 New Ankara Arrivals
               </h3>
-              <p className="text-background/70 text-sm mt-2 max-w-xs">
+              <p className="text-white/70 text-sm mt-2 max-w-xs">
                 Fresh styles added weekly. Dresses, kimonos, tops, and more.
               </p>
-              <div className="inline-flex items-center gap-2 mt-4 text-background text-sm font-medium">
+              <div className="inline-flex items-center gap-2 mt-4 text-white text-sm font-medium">
                 Explore New In
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
