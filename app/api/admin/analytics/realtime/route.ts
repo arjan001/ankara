@@ -1,48 +1,27 @@
-import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 import { NextResponse } from "next/server"
 
 export async function GET() {
   try {
-    const supabase = await createClient()
+    const supabase = createAdminClient()
 
-    // Check if user is admin
-    const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
+    // Count unique page views in the last 5 minutes as "active users"
+    const fiveMinAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString()
 
-    const { data: adminUser } = await supabase
-      .from("admin_users")
-      .select("role")
-      .eq("email", user.email)
-      .single()
-
-    if (!adminUser) {
-      return NextResponse.json({ error: "Not an admin" }, { status: 403 })
-    }
-
-    // Get active sessions in the last 5 minutes
-    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString()
-
-    const { data: sessions = [], error } = await supabase
+    const { count, error } = await supabase
       .from("page_views")
-      .select("session_id")
-      .gte("created_at", fiveMinutesAgo)
-      .eq("is_active", true)
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", fiveMinAgo)
 
     if (error) {
-      console.error("[v0] Error fetching realtime users:", error)
+      console.error("[v0] Realtime analytics error:", error)
     }
 
-    // Count unique sessions
-    const uniqueSessions = new Set(sessions.map((s) => s.session_id)).size
-
     return NextResponse.json({
-      activeUsers: uniqueSessions,
+      activeUsers: count || 0,
       timestamp: new Date().toISOString(),
     })
-  } catch (error) {
-    console.error("[v0] Realtime analytics error:", error)
-    return NextResponse.json({ activeUsers: 0, error: "Failed to fetch realtime data" }, { status: 500 })
+  } catch {
+    return NextResponse.json({ activeUsers: 0 }, { status: 500 })
   }
 }

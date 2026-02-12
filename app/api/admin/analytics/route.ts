@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   // Current period views
   const { data: currentViews } = await supabase
     .from("page_views")
-    .select("id, page_path, referrer, country, city, device_type, browser, session_id, created_at")
+    .select("id, page_path, referrer, country, device_type, browser, created_at")
     .gte("created_at", sinceISO)
     .order("created_at", { ascending: false })
 
@@ -28,9 +28,42 @@ export async function GET(request: NextRequest) {
     .gte("created_at", prevSinceISO)
     .lt("created_at", sinceISO)
 
+  // Orders/sales data for the period
+  const { data: currentOrders } = await supabase
+    .from("orders")
+    .select("id, total, status, created_at")
+    .gte("created_at", sinceISO)
+    .order("created_at", { ascending: false })
+
+  const { data: prevOrders } = await supabase
+    .from("orders")
+    .select("id, total")
+    .gte("created_at", prevSinceISO)
+    .lt("created_at", sinceISO)
+
   const views = currentViews || []
+  const orders = currentOrders || []
   const totalViews = views.length
-  const uniqueSessions = new Set(views.map((v) => v.session_id).filter(Boolean)).size
+  const totalOrders = orders.length
+  const totalRevenue = orders.reduce((sum, o) => sum + (Number(o.total) || 0), 0)
+  const prevOrderCount = prevOrders?.length || 0
+  const prevRevenue = (prevOrders || []).reduce((sum, o) => sum + (Number(o.total) || 0), 0)
+
+  // Sales by day
+  const salesByDay: Record<string, { orders: number; revenue: number }> = {}
+  orders.forEach((o) => {
+    const day = new Date(o.created_at).toISOString().split("T")[0]
+    if (!salesByDay[day]) salesByDay[day] = { orders: 0, revenue: 0 }
+    salesByDay[day].orders++
+    salesByDay[day].revenue += Number(o.total) || 0
+  })
+  const salesTimeline: { date: string; orders: number; revenue: number }[] = []
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date()
+    d.setDate(d.getDate() - i)
+    const key = d.toISOString().split("T")[0]
+    salesTimeline.push({ date: key, orders: salesByDay[key]?.orders || 0, revenue: salesByDay[key]?.revenue || 0 })
+  }
 
   // Views by page
   const pageMap: Record<string, number> = {}
@@ -94,10 +127,14 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({
     totalViews,
-    uniqueSessions,
     previousPeriodViews: prevViewCount || 0,
+    totalOrders,
+    totalRevenue,
+    prevOrderCount,
+    prevRevenue,
     topPages,
     viewsByDay,
+    salesTimeline,
     devices,
     browsers,
     countries,
