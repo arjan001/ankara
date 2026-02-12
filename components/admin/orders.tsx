@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import { toast } from "sonner"
 import { Eye, Truck, CheckCircle, Clock, Package, XCircle, Search, Trash2, Loader2, MessageSquare, Phone } from "lucide-react"
 import { usePagination } from "@/hooks/use-pagination"
@@ -227,11 +226,6 @@ export function AdminOrders() {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center gap-2.5">
-                          {order.items[0]?.image && (
-                            <div className="relative w-9 h-11 flex-shrink-0 bg-secondary rounded-sm overflow-hidden hidden sm:block">
-                              <Image src={order.items[0].image || "/placeholder.svg"} alt="" fill className="object-cover" />
-                            </div>
-                          )}
                           <div>
                             <span className="font-medium">{order.orderNo}</span>
                             <span className="sm:hidden text-xs text-muted-foreground block">{order.customer}</span>
@@ -374,13 +368,8 @@ export function AdminOrders() {
                 <div className="divide-y divide-border">
                   {selectedOrder.items.map((item, i) => (
                     <div key={i} className="flex items-center gap-3 px-4 py-3">
-                      <div className="relative w-12 h-14 flex-shrink-0 bg-secondary rounded-sm overflow-hidden">
-                        <Image
-                          src={item.image || "/placeholder.svg"}
-                          alt={item.name}
-                          fill
-                          className="object-cover"
-                        />
+                      <div className="w-10 h-10 rounded-sm bg-secondary flex items-center justify-center flex-shrink-0">
+                        <Package className="h-4 w-4 text-muted-foreground" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{item.name}</p>

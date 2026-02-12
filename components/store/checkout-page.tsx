@@ -47,7 +47,12 @@ export function CheckoutPage() {
   const deliveryFee = selectedDelivery?.fee || 0
   const grandTotal = totalPrice + deliveryFee
   const freeShipping = totalPrice >= 5000
-  const isFormValid = formData.name && formData.phone && formData.address
+
+  // Validate Kenyan phone: +254, 254, 07, 01, 011
+  const cleanPhone = formData.phone.replace(/[\s\-()]/g, "")
+  const isPhoneValid = /^(\+?254[17]\d{8}|0[17]\d{8}|011\d{7})$/.test(cleanPhone)
+  const isFormValid = formData.name && formData.phone && formData.address && isPhoneValid
+  const [formError, setFormError] = useState("")
 
   const buildOrderPayload = (orderedVia: string) => ({
     customerName: formData.name,
@@ -73,8 +78,17 @@ export function CheckoutPage() {
     })),
   })
 
+  const validateForm = (): boolean => {
+    if (!formData.name.trim()) { setFormError("Please enter your full name."); return false }
+    if (!formData.phone.trim()) { setFormError("Please enter your phone number."); return false }
+    if (!isPhoneValid) { setFormError("Please enter a valid Kenyan phone number (e.g. 0712345678, +254712345678, or 0112345678)."); return false }
+    if (!formData.address.trim()) { setFormError("Please enter your delivery address."); return false }
+    setFormError("")
+    return true
+  }
+
   const handleNormalCheckout = async () => {
-    if (!isFormValid) return
+    if (!validateForm()) return
     setIsSubmitting(true)
     try {
       const res = await fetch("/api/orders", {
@@ -86,16 +100,19 @@ export function CheckoutPage() {
       if (res.ok) {
         setOrderResult(data)
         clearCart()
+      } else {
+        setFormError(data.error || "Failed to place order. Please try again.")
       }
     } catch (err) {
       console.error("Order failed:", err)
+      setFormError("Connection error. Please try again.")
     } finally {
       setIsSubmitting(false)
     }
   }
 
   const handleWhatsAppCheckout = async () => {
-    if (!isFormValid) return
+    if (!validateForm()) return
     setIsSubmitting(true)
 
     // Save order to DB first
@@ -135,7 +152,7 @@ export function CheckoutPage() {
   }
 
   const handleMpesaPayment = () => {
-    if (!isFormValid) return
+    if (!validateForm()) return
     setShowMpesa(true)
   }
 
@@ -358,10 +375,14 @@ export function CheckoutPage() {
                       id="phone"
                       type="tel"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => { setFormData({ ...formData, phone: e.target.value }); setFormError("") }}
                       placeholder="0712 345 678"
-                      className="h-11"
+                      className={`h-11 ${formData.phone && !isPhoneValid ? "border-red-500 focus-visible:ring-red-500" : ""}`}
                     />
+                    <p className="text-[11px] text-muted-foreground mt-1">Format: 07XX, 01XX, 011X, +254 or 254</p>
+                    {formData.phone && !isPhoneValid && (
+                      <p className="text-xs text-red-500 mt-1">Enter a valid Kenyan number (e.g. 0712345678)</p>
+                    )}
                   </div>
                   <div>
                     <Label htmlFor="email" className="text-sm font-medium mb-1.5 block">Email (optional)</Label>
@@ -500,11 +521,17 @@ export function CheckoutPage() {
                   </div>
                 </div>
 
+                {formError && (
+                  <div className="mt-4 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm px-4 py-3 rounded-sm">
+                    {formError}
+                  </div>
+                )}
+
                 <div className="mt-6 space-y-3">
                   {/* M-PESA Payment */}
                   <Button
                     onClick={handleMpesaPayment}
-                    disabled={!isFormValid || isSubmitting}
+                    disabled={isSubmitting}
                     className="w-full h-12 text-sm font-semibold disabled:opacity-40 bg-[#4CAF50] text-white hover:bg-[#43A047]"
                   >
                     <svg className="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
@@ -526,7 +553,7 @@ export function CheckoutPage() {
                   {/* WhatsApp Checkout */}
                   <Button
                     onClick={handleWhatsAppCheckout}
-                    disabled={!isFormValid || isSubmitting}
+                    disabled={isSubmitting}
                     variant="outline"
                     className="w-full h-12 text-sm font-medium disabled:opacity-40 bg-transparent"
                   >
