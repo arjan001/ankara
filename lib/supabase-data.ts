@@ -314,8 +314,8 @@ export async function getHeroBanners(): Promise<HeroBanner[]> {
     title: b.title,
     subtitle: b.subtitle || "",
     collection: b.collection,
-    bannerImage: b.banner_image || `/banners/${b.collection}-collection.jpg`,
-    linkUrl: b.link_url,
+    bannerImage: b.image_url || b.banner_image || `/banners/${b.collection}-collection.jpg`,
+    linkUrl: b.button_link || b.link_url,
     buttonText: b.button_text || "Shop Now",
     sortOrder: b.sort_order,
   }))
