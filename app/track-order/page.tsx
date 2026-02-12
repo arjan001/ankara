@@ -6,27 +6,27 @@ import { Footer } from "@/components/store/footer"
 import { TrackOrderForm } from "@/components/store/track-order-form"
 
 export const metadata: Metadata = {
-  title: "Track My Order | Kallittos Fashions",
+  title: "Track My Order | Classy Collections",
   description:
-    "Track your Kallittos Fashions order in real time. Enter your order number or phone number to see the status of your denim delivery across Kenya.",
-  alternates: { canonical: "https://kallittofashions.com/track-order" },
+    "Track your Classy Collections order in real time. Enter your order number or phone number to see the status of your Ankara fashion delivery across Kenya.",
+  alternates: { canonical: "https://classycollections.com/track-order" },
   keywords: [
-    "track order Kallittos", "kallittosfashions order tracking", "track jeans delivery Kenya",
-    "Kallittos Fashions order status", "denim delivery Nairobi", "check order Kenya",
+    "track order Classy Collections", "ankara delivery tracking", "order status Kenya",
+    "Classy Collections order status", "fashion delivery Kenya", "check order status",
   ],
   openGraph: {
-    title: "Track My Order | Kallittos Fashions",
-    description: "Track your thrift denim order in real time. Enter your order number or phone to check delivery status.",
-    url: "https://kallittofashions.com/track-order",
+    title: "Track My Order | Classy Collections",
+    description: "Track your Ankara fashion order in real time. Enter your order number or phone to check delivery status.",
+    url: "https://classycollections.com/track-order",
     type: "website",
-    siteName: "Kallittos Fashions",
+    siteName: "Classy Collections",
     locale: "en_KE",
-    images: [{ url: "https://kallittofashions.com/logo-kf.png", width: 512, height: 512, alt: "Kallittos Fashions Order Tracking" }],
+    images: [{ url: "https://classycollections.com/logo.png", width: 512, height: 512, alt: "Classy Collections Order Tracking" }],
   },
   twitter: {
     card: "summary",
-    title: "Track My Order | Kallittos Fashions",
-    description: "Track your denim delivery in real time across Kenya.",
+    title: "Track My Order | Classy Collections",
+    description: "Track your Ankara fashion delivery in real time across Kenya.",
   },
 }
 

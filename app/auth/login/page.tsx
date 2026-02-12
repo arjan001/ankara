@@ -71,7 +71,7 @@ export default function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@kallitosfashion.com"
+              placeholder="admin@classycollections.com"
               className="h-11"
               required
               autoFocus

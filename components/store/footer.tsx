@@ -182,15 +182,7 @@ export function Footer() {
           </div>
           <div className="mt-4 text-center">
             <p className="text-background/30 text-[11px]">
-              {"Designed & developed by "}
-              <a
-                href="https://oneplusafrica.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-background/50 hover:text-background transition-colors underline underline-offset-2"
-              >
-                OnePlusAfrica Tech Solutions
-              </a>
+              Classy Collections - Premium African Ankara Fashion
             </p>
           </div>
         </div>

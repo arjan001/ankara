@@ -2,36 +2,34 @@ import type { Metadata } from "next"
 import { WishlistPage } from "@/components/store/wishlist-page"
 
 export const metadata: Metadata = {
-  title: "My Wishlist | Kallittos Fashions",
+  title: "My Wishlist | Classy Collections",
   description:
-    "Save your favourite thrift and brand-new denim pieces to your Kallittos Fashions wishlist. Curate your perfect collection of jeans, jackets, and dungarees and shop when you are ready. Delivered across Kenya via M-PESA.",
-  alternates: { canonical: "https://kallittofashions.com/wishlist" },
+    "Save your favourite Ankara fashion pieces to your Classy Collections wishlist. Curate your perfect collection of premium African dresses, suits, kimonos, and more. Shop when ready with fast delivery across Kenya and East Africa.",
+  alternates: { canonical: "https://classycollections.com/wishlist" },
   keywords: [
-    "Kallittos wishlist", "saved jeans Kenya", "favourite denim Nairobi",
-    "thrift jeans wishlist", "denim collection Kenya", "Kallittos Fashions wishlist",
-    "buy later jeans", "curated denim picks", "Kallittos saved items",
+    "Classy Collections wishlist", "saved Ankara dresses", "favourite Ankara pieces",
+    "Ankara wishlist Kenya", "African fashion collection", "Classy Collections saved items",
+    "buy later Ankara fashion", "curated fashion picks", "Classy Collections wishlist",
   ],
   authors: [
-    { name: "Kallittos Fashions", url: "https://kallittofashions.com" },
-    { name: "OnePlusAfrica Tech Solutions", url: "https://oneplusafrica.com/" },
+    { name: "Classy Collections", url: "https://classycollections.com" },
   ],
-  creator: "OnePlusAfrica Tech Solutions",
-  publisher: "Kallittos Fashions",
+  creator: "Classy Collections",
+  publisher: "Classy Collections",
   openGraph: {
-    title: "My Wishlist | Kallittos Fashions",
-    description: "Your saved denim favourites at Kallittos Fashions. Curate your perfect thrift and new denim collection.",
-    url: "https://kallittofashions.com/wishlist",
-    siteName: "Kallittos Fashions",
+    title: "My Wishlist | Classy Collections",
+    description: "Your saved Ankara fashion favourites at Classy Collections. Curate your perfect premium African collection.",
+    url: "https://classycollections.com/wishlist",
+    siteName: "Classy Collections",
     type: "website",
     locale: "en_KE",
   },
   twitter: {
     card: "summary",
-    title: "My Wishlist | Kallittos Fashions",
-    description: "Your saved denim favourites at Kallittos Fashions.",
-    creator: "@kallittos",
+    title: "My Wishlist | Classy Collections",
+    description: "Your saved Ankara fashion favourites at Classy Collections.",
+    creator: "@_classycollections",
   },
-  alternates: { canonical: "https://kallittofashions.com/wishlist" },
 }
 
 export default function Page() {

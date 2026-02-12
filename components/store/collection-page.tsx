@@ -22,26 +22,16 @@ function formatPrice(price: number): string {
   return `KSh ${price.toLocaleString()}`
 }
 
-const COLLECTION_INFO: Record<string, { label: string; tagline: string; banners: string[]; social?: { label: string; handle: string; url: string } }> = {
+const COLLECTION_INFO: Record<string, { label: string; tagline: string; banners: string[] }> = {
   men: {
-    label: "Men's Collection",
-    tagline: "Rugged denim designed for the modern man",
+    label: "Men's Ankara Collection",
+    tagline: "Premium Ankara fashion for the modern African gentleman",
     banners: ["/banners/men-page-banner.jpg", "/banners/men-collection.jpg"],
   },
   women: {
-    label: "Women's Collection",
-    tagline: "Curated denim styles for every woman",
+    label: "Women's Ankara Collection",
+    tagline: "Elegant Ankara dresses, kimonos, and more for every occasion",
     banners: ["/banners/women-page-banner.jpg", "/banners/women-collection.jpg"],
-  },
-  babyshop: {
-    label: "Kali-ttos Little Wardrobe",
-    tagline: "All your baby essentials in one place -- clothing, shoes & accessories for ages 0-1, 1-3 & 4-6.",
-    banners: ["/banners/babyshop-page-banner.jpg", "/banners/babyshop-collection.jpg"],
-    social: {
-      label: "Follow us on TikTok",
-      handle: "@kalittos01",
-      url: "https://www.tiktok.com/@kalittos01",
-    },
   },
 }
 

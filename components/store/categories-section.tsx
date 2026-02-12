@@ -9,35 +9,16 @@ import useSWR from "swr"
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 const COLLECTIONS = [
-  { name: "Men", slug: "men", image: "/banners/men-collection.jpg", href: "/shop/men" },
-  { name: "Women", slug: "women", image: "/banners/women-collection.jpg", href: "/shop/women" },
-  {
-    name: "Babyshop",
-    slug: "babyshop",
-    image: "/banners/babyshop-collection.jpg",
-    href: "/shop/babyshop",
-    social: {
-      label: "Kali-ttos Little Wardrobe",
-      platform: "TikTok",
-      handle: "@kalittos01",
-      url: "https://www.tiktok.com/@kalittos01",
-    },
-  },
+  { name: "Women", slug: "women", image: "/banners/hero-ankara-main.jpg", href: "/shop/women" },
+  { name: "Men", slug: "men", image: "/banners/ankara-new-arrivals-banner.jpg", href: "/shop/men" },
 ]
 
 const CATEGORY_IMAGES: Record<string, string> = {
-  "mom-jeans": "/categories/mom-jeans.jpg",
-  "boyfriend-jeans": "/categories/boyfriend-jeans.jpg",
-  "skinny-jeans": "/categories/skinny-jeans.jpg",
-  "straight-jeans": "/categories/straight-jeans.jpg",
-  "wide-leg": "/categories/wide-leg.jpg",
-  "denim-shorts": "/categories/denim-shorts.jpg",
-  "denim-skirts": "/categories/denim-skirts.jpg",
-  "denim-jackets": "/categories/denim-jackets.jpg",
-  "dungarees-overalls": "/categories/dungarees-overalls.jpg",
-  "ripped-rugged": "/categories/ripped-rugged.jpg",
-  sweatshirts: "/categories/sweatshirts.jpg",
-  flannels: "/categories/flannels.jpg",
+  "ankara-dresses": "/images/products/green-black-midi-1.jpg",
+  "ankara-party": "/images/products/red-organza-party-1.jpg",
+  "ankara-kimonos": "/images/products/orange-blue-party-1.jpg",
+  "ankara-tops": "/images/products/red-brown-bulb-1.jpg",
+  "ankara-suits": "/banners/ankara-dresses-banner.jpg",
 }
 
 export function CategoriesSection() {
@@ -65,23 +46,20 @@ export function CategoriesSection() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-3 gap-4 lg:gap-6">
+          <div className="grid grid-cols-2 gap-4 lg:gap-6">
             {COLLECTIONS.map((col) => (
               <Link key={col.slug} href={col.href} className="group">
                 <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-secondary">
                   <Image
                     src={col.image}
-                    alt={`${col.name} collection`}
+                    alt={`${col.name} Ankara collection`}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">
-                    <h3 className="text-background text-xl font-serif font-bold">{col.name}</h3>
-                    {"social" in col && col.social && (
-                      <p className="text-background/60 text-xs mt-1">{col.social.label}</p>
-                    )}
-                    <span className="inline-flex items-center gap-1.5 mt-2 text-background/80 text-xs font-medium tracking-wide uppercase group-hover:text-background transition-colors">
+                    <h3 className="text-white text-xl font-serif font-bold">{col.name}</h3>
+                    <span className="inline-flex items-center gap-1.5 mt-2 text-white/80 text-xs font-medium tracking-wide uppercase group-hover:text-white transition-colors">
                       Shop {col.name}
                       <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
                     </span>

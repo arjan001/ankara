@@ -15,7 +15,7 @@ interface SocialPost {
 // Uses rss.app or similar RSS-to-JSON proxies to get latest posts.
 // Falls back to scraping the profile page via imginn.com which mirrors IG publicly.
 async function fetchInstagramPosts(): Promise<SocialPost[]> {
-  const username = "kallittofashions"
+  const username = "classycollections"
   const posts: SocialPost[] = []
 
   // Approach 1: Use imginn.com (public IG mirror) HTML scrape
@@ -45,7 +45,7 @@ async function fetchInstagramPosts(): Promise<SocialPost[]> {
             id: `ig-${shortcode}`,
             platform: "instagram",
             thumbnailUrl: thumbUrl,
-            caption: "Latest from @kallittofashions",
+            caption: "Latest from @classycollections",
             url: `https://www.instagram.com/p/${shortcode}/`,
             authorName: `@${username}`,
           })
@@ -97,10 +97,10 @@ async function fetchInstagramPosts(): Promise<SocialPost[]> {
 // ── TikTok ────────────────────────────────────────────
 // Uses the official TikTok oembed API (free, no auth required)
 async function fetchTikTokPosts(): Promise<SocialPost[]> {
-  // Known recent video URLs from @kallittos
+  // Known recent video URLs from @classycollections
   const videoUrls = [
-    "https://www.tiktok.com/@kallittos/video/7461643744227393798",
-    "https://www.tiktok.com/@kallittos/video/7459629757042420998",
+    "https://www.tiktok.com/@classycollections/video/7461643744227393798",
+    "https://www.tiktok.com/@classycollections/video/7459629757042420998",
   ]
 
   const posts: SocialPost[] = []
@@ -122,7 +122,7 @@ async function fetchTikTokPosts(): Promise<SocialPost[]> {
           url: videoUrl,
           authorName: data.author_name
             ? `@${data.author_name}`
-            : "@kallittos",
+: "@classycollections",
         })
       }
     } catch {
@@ -140,36 +140,36 @@ const fallbackPosts: SocialPost[] = [
     platform: "instagram",
     thumbnailUrl:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/629193217_18340368757212493_1480765838168153731_n-wC1jOTRfbRYdWnoXghbWGXEVNGBWam.jpg",
-    caption: "New thrift drop just landed! Acid wash skinny jeans",
-    url: "https://www.instagram.com/kallittofashions/",
-    authorName: "@kallittofashions",
+    caption: "New Ankara drop just landed! Fresh prints available",
+    url: "https://www.instagram.com/classycollections/",
+    authorName: "@classycollections",
   },
   {
     id: "tt-fallback-1",
     platform: "tiktok",
     thumbnailUrl:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/626300021_18340368655212493_4414636015382857078_n-blUbjySwyB9lUadVyYMogCeKLn1ceI.jpg",
-    caption: "How to style thrifted denim for any occasion",
-    url: "https://www.tiktok.com/@kallittos/video/7461643744227393798",
-    authorName: "@kallittos",
+    caption: "How to style Ankara for any occasion",
+    url: "https://www.tiktok.com/@classycollections/video/7461643744227393798",
+    authorName: "@classycollections",
   },
   {
     id: "ig-fallback-2",
     platform: "instagram",
     thumbnailUrl:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/630121672_18340368937212493_3946690921086389086_n-VRoUTe5L8vTxr34o4RQxJDZGGzARSK.jpg",
-    caption: "Bootcut flared jeans - a timeless classic",
-    url: "https://www.instagram.com/kallittofashions/",
-    authorName: "@kallittofashions",
+    caption: "Elegant Ankara prints - timeless African fashion",
+    url: "https://www.instagram.com/classycollections/",
+    authorName: "@classycollections",
   },
   {
     id: "tt-fallback-2",
     platform: "tiktok",
     thumbnailUrl:
       "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/627839274_18340368694212493_1900658190163154627_n-RQbuPfN5qde7Mt0Zu6MOrirynVM7Nv.jpg",
-    caption: "Size-inclusive denim haul from Kallittos Fashions",
-    url: "https://www.tiktok.com/@kallittos/video/7459629757042420998",
-    authorName: "@kallittos",
+    caption: "Size-inclusive Ankara haul from Classy Collections",
+    url: "https://www.tiktok.com/@classycollections/video/7459629757042420998",
+    authorName: "@classycollections",
   },
 ]
 

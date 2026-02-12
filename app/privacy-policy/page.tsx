@@ -13,21 +13,17 @@ async function getPolicy() {
 export async function generateMetadata(): Promise<Metadata> {
   const p = await getPolicy()
   return {
-    title: p?.meta_title || "Privacy Policy | Kallittos Fashions",
-    description: p?.meta_description || "Learn how Kallittos Fashions collects, uses, and protects your personal information.",
-    alternates: { canonical: "https://kallittofashions.com/privacy-policy" },
-    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["privacy policy", "kallittos fashions"],
-    authors: [
-      { name: "Kallittos Fashions", url: "https://kallittofashions.com" },
-      { name: "OnePlusAfrica Tech Solutions", url: "https://oneplusafrica.com/" },
-    ],
-    creator: "OnePlusAfrica Tech Solutions",
-    alternates: { canonical: "https://kallittofashions.com/privacy-policy" },
+    title: p?.meta_title || "Privacy Policy | Classy Collections",
+    description: p?.meta_description || "Learn how Classy Collections collects, uses, and protects your personal information.",
+    alternates: { canonical: "https://classycollections.com/privacy-policy" },
+    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["privacy policy", "classy collections"],
+    authors: [{ name: "Classy Collections", url: "https://classycollections.com" }],
+    creator: "Classy Collections",
     openGraph: {
-      title: p?.meta_title || "Privacy Policy | Kallittos Fashions",
-      description: p?.meta_description || "Learn how Kallittos Fashions collects, uses, and protects your personal information.",
-      url: "https://kallittofashions.com/privacy-policy",
-      siteName: "Kallittos Fashions",
+      title: p?.meta_title || "Privacy Policy | Classy Collections",
+      description: p?.meta_description || "Learn how Classy Collections collects, uses, and protects your personal information.",
+      url: "https://classycollections.com/privacy-policy",
+      siteName: "Classy Collections",
       type: "website",
     },
   }

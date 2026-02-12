@@ -10,9 +10,9 @@ import useSWR from "swr"
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 const ANKARA_CAROUSEL_IMAGES = [
-  "/banners/women-page-banner.jpg",
-  "/banners/women-collection.jpg",
-  "/banners/men-collection.jpg",
+  "/banners/hero-ankara-main.jpg",
+  "/images/products/green-black-midi-1.jpg",
+  "/images/products/red-organza-party-1.jpg",
 ]
 
 const FALLBACK_BANNERS: HeroBanner[] = [
@@ -21,29 +21,29 @@ const FALLBACK_BANNERS: HeroBanner[] = [
     title: "Ankara Dresses Collection",
     subtitle: "Stunning Ankara dresses for every occasion. From casual to formal, find your perfect style with our curated collection.",
     collection: "women-ankara-dresses",
-    bannerImage: "/banners/women-page-banner.jpg",
+    bannerImage: "/banners/hero-ankara-main.jpg",
     linkUrl: "/shop?category=women-ankara-dresses",
     buttonText: "Shop Dresses",
     sortOrder: 0,
   },
   {
-    id: "men-suits",
-    title: "Men's Ankara Suits",
-    subtitle: "Premium ready-made Ankara suits for weddings, events, and celebrations. Handcrafted excellence for the modern African man.",
-    collection: "men-ankara-suits",
-    bannerImage: "/banners/men-collection.jpg",
-    linkUrl: "/shop?category=men-ankara-suits",
-    buttonText: "Explore Suits",
+    id: "ankara-party",
+    title: "Ankara Party Dresses",
+    subtitle: "Premium Ankara dresses for weddings, events, and celebrations. Handcrafted elegance for every occasion.",
+    collection: "ankara-party",
+    bannerImage: "/banners/ankara-dresses-banner.jpg",
+    linkUrl: "/shop?filter=new",
+    buttonText: "Explore Collection",
     sortOrder: 1,
   },
   {
-    id: "women-kimonos",
-    title: "Ankara Kimonos",
-    subtitle: "Trendy Ankara kimonos with matching accessories. Versatile pieces for modern African style and casual elegance.",
-    collection: "women-ankara-kimonos",
-    bannerImage: "/banners/women-collection.jpg",
-    linkUrl: "/shop?category=women-ankara-kimonos",
-    buttonText: "View Kimonos",
+    id: "ankara-new",
+    title: "New Ankara Arrivals",
+    subtitle: "Fresh styles added weekly. Kimonos, fitted dresses, and statement pieces for the modern African woman.",
+    collection: "ankara-new",
+    bannerImage: "/banners/ankara-new-arrivals-banner.jpg",
+    linkUrl: "/shop?filter=new",
+    buttonText: "View New In",
     sortOrder: 2,
   },
 ]
@@ -81,69 +81,17 @@ function AnkaraCarousel({ banner }: { banner: HeroBanner }) {
             />
           </div>
         ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
       </div>
       <div className="relative z-10 p-8 lg:p-12 w-full">
-        <p className="text-background/80 text-xs tracking-[0.3em] uppercase mb-2">African Fashion</p>
-        <h1 className="text-background text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
+        <p className="text-white/80 text-xs tracking-[0.3em] uppercase mb-2">African Fashion</p>
+        <h1 className="text-white text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
           {banner.title}
         </h1>
-        <p className="text-background/70 text-sm mt-3 leading-relaxed max-w-md">
+        <p className="text-white/70 text-sm mt-3 leading-relaxed max-w-md">
           {banner.subtitle}
         </p>
-        <span className="inline-flex items-center gap-2 mt-5 bg-primary hover:bg-primary/90 text-primary-foreground px-7 py-3 text-sm font-medium transition-colors">
-          {banner.buttonText}
-          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-        </span>
-      </div>
-    </Link>
-  )
-}
-
-function BabyshopCarousel({ banner }: { banner: HeroBanner }) {
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % ANKARA_CAROUSEL_IMAGES.length)
-  }, [])
-
-  useEffect(() => {
-    const interval = setInterval(nextSlide, 4000)
-    return () => clearInterval(interval)
-  }, [nextSlide])
-
-  return (
-    <Link
-      href={banner.linkUrl}
-      className="lg:col-span-8 relative overflow-hidden rounded-sm min-h-[400px] lg:min-h-[520px] flex items-end group"
-    >
-      <div className="absolute inset-0 z-0">
-        {ANKARA_CAROUSEL_IMAGES.map((src, i) => (
-          <div
-            key={src}
-            className="absolute inset-0 transition-opacity duration-700"
-            style={{ opacity: i === currentSlide ? 1 : 0 }}
-          >
-            <Image
-              src={src}
-              alt={`${banner.title} - carousel slide ${i + 1}`}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
-              priority={i === 0}
-            />
-          </div>
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-      </div>
-      <div className="relative z-10 p-8 lg:p-12 w-full">
-        <p className="text-background/80 text-xs tracking-[0.3em] uppercase mb-2">Baby Essentials</p>
-        <h1 className="text-background text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
-          {banner.title}
-        </h1>
-        <p className="text-background/70 text-sm mt-3 leading-relaxed max-w-md">
-          {banner.subtitle}
-        </p>
-        <span className="inline-flex items-center gap-2 mt-5 bg-background text-foreground px-7 py-3 text-sm font-medium group-hover:bg-background/90 transition-colors">
+        <span className="inline-flex items-center gap-2 mt-5 bg-white text-black px-7 py-3 text-sm font-medium hover:bg-white/90 transition-colors">
           {banner.buttonText}
           <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </span>
@@ -179,19 +127,19 @@ export function Hero() {
                   className="object-cover group-hover:scale-105 transition-transform duration-700"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               </div>
               <div className="relative z-10 p-8 lg:p-12 w-full">
-                <p className="text-background/80 text-xs tracking-[0.3em] uppercase mb-2">
+                <p className="text-white/80 text-xs tracking-[0.3em] uppercase mb-2">
                   {mainBanner.collection === "ankara-suits" ? "African Fashion" : "Ankara Collection"}
                 </p>
-                <h1 className="text-background text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
+                <h1 className="text-white text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
                   {mainBanner.title}
                 </h1>
-                <p className="text-background/70 text-sm mt-3 leading-relaxed max-w-md">
+                <p className="text-white/70 text-sm mt-3 leading-relaxed max-w-md">
                   {mainBanner.subtitle}
                 </p>
-                <span className="inline-flex items-center gap-2 mt-5 bg-primary hover:bg-primary/90 text-primary-foreground px-7 py-3 text-sm font-medium transition-colors">
+                <span className="inline-flex items-center gap-2 mt-5 bg-white text-black px-7 py-3 text-sm font-medium hover:bg-white/90 transition-colors">
                   {mainBanner.buttonText}
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </span>
@@ -214,15 +162,15 @@ export function Hero() {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 via-foreground/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
                 <div className="relative z-10 p-5 w-full">
-                  <h3 className="text-background font-serif text-lg font-semibold leading-snug">
+                  <h3 className="text-white font-serif text-lg font-semibold leading-snug">
                     {banner.title}
                   </h3>
-                  <p className="text-background/70 text-xs mt-1 line-clamp-2">
+                  <p className="text-white/70 text-xs mt-1 line-clamp-2">
                     {banner.subtitle}
                   </p>
-                  <span className="inline-flex items-center gap-1.5 mt-3 text-background text-xs font-medium tracking-wide uppercase group-hover:underline">
+                  <span className="inline-flex items-center gap-1.5 mt-3 text-white text-xs font-medium tracking-wide uppercase group-hover:underline">
                     {banner.buttonText}
                     <ArrowRight className="h-3 w-3 group-hover:translate-x-0.5 transition-transform" />
                   </span>

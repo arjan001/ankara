@@ -15,23 +15,23 @@ export function OfferBanner() {
             className="relative overflow-hidden rounded-sm min-h-[280px] flex items-center group"
           >
             <Image
-              src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=700&h=400&fit=crop"
-              alt="Denim sale collection"
+              src="/images/products/green-black-midi-1.jpg"
+              alt="Ankara collection on offer"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-foreground/50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-transparent" />
             <div className="relative z-10 p-8 lg:p-10">
-              <p className="text-background/70 text-xs tracking-[0.3em] uppercase mb-2">
+              <p className="text-white/70 text-xs tracking-[0.3em] uppercase mb-2">
                 Limited Offer
               </p>
-              <h3 className="text-background text-2xl lg:text-3xl font-serif font-bold">
-                Denim Season Sale
+              <h3 className="text-white text-2xl lg:text-3xl font-serif font-bold">
+                Ankara Collection Sale
               </h3>
-              <p className="text-background/70 text-sm mt-2 max-w-xs">
-                Up to 30% off on selected jeans. Thrift meets style, curated for you.
+              <p className="text-white/70 text-sm mt-2 max-w-xs">
+                Up to 30% off on selected Ankara dresses. Premium African print fashion, curated for you.
               </p>
-              <div className="inline-flex items-center gap-2 mt-4 text-background text-sm font-medium">
+              <div className="inline-flex items-center gap-2 mt-4 text-white text-sm font-medium">
                 Shop The Sale
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>
@@ -44,23 +44,23 @@ export function OfferBanner() {
             className="relative overflow-hidden rounded-sm min-h-[280px] flex items-center group"
           >
             <Image
-              src="https://images.unsplash.com/photo-1604176354204-9268737828e4?w=700&h=400&fit=crop"
-              alt="New denim arrivals"
+              src="/images/products/orange-blue-party-1.jpg"
+              alt="New Ankara arrivals"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-foreground/50" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-transparent" />
             <div className="relative z-10 p-8 lg:p-10">
-              <p className="text-background/70 text-xs tracking-[0.3em] uppercase mb-2">
+              <p className="text-white/70 text-xs tracking-[0.3em] uppercase mb-2">
                 Just Dropped
               </p>
-              <h3 className="text-background text-2xl lg:text-3xl font-serif font-bold">
-                New Denim Arrivals
+              <h3 className="text-white text-2xl lg:text-3xl font-serif font-bold">
+                New Ankara Arrivals
               </h3>
-              <p className="text-background/70 text-sm mt-2 max-w-xs">
-                Fresh pairs curated weekly. Mom jeans, skinny fits, and more.
+              <p className="text-white/70 text-sm mt-2 max-w-xs">
+                Fresh styles added weekly. Dresses, kimonos, tops, and more.
               </p>
-              <div className="inline-flex items-center gap-2 mt-4 text-background text-sm font-medium">
+              <div className="inline-flex items-center gap-2 mt-4 text-white text-sm font-medium">
                 Explore New In
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </div>

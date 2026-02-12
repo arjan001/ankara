@@ -8,8 +8,8 @@ import { TrackOrderForm } from "@/components/store/track-order-form"
 export async function generateMetadata({ params }: { params: Promise<{ orderNumber: string }> }): Promise<Metadata> {
   const { orderNumber } = await params
   return {
-    title: `Track Order ${orderNumber} | Kallittos Fashions`,
-    description: `Track the status of your order ${orderNumber} at Kallittos Fashions. Real-time delivery updates for your denim order across Kenya.`,
+    title: `Track Order ${orderNumber} | Classy Collections`,
+    description: `Track the status of your order ${orderNumber} at Classy Collections. Real-time delivery updates for your Ankara fashion order across Kenya.`,
     robots: { index: false, follow: false },
   }
 }

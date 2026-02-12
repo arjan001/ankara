@@ -19,7 +19,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/admin/", "/api/", "/auth/"],
       },
     ],
-    sitemap: "https://kallittofashions.com/sitemap.xml",
-    host: "https://kallittofashions.com",
+    sitemap: "https://classycollections.com/sitemap.xml",
+    host: "https://classycollections.com",
   }
 }
