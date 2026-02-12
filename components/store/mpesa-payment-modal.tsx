@@ -49,26 +49,21 @@ export function MpesaPaymentModal({ isOpen, onClose, total, onPaymentConfirmed }
       const codeMatch = mpesaMessage.match(/[A-Z0-9]{10}/)?.[0] || "MPESA-" + Date.now().toString().slice(-6)
       const phoneMatch = mpesaMessage.match(/(?:254|0)\d{9}/)?.[0] || mpesaPhone.trim() || "Not provided"
 
-      await new Promise((r) => setTimeout(r, 800))
-      
       // Call the parent callback to handle payment confirmation
+      await new Promise((r) => setTimeout(r, 500)) // Brief delay for UX
       onPaymentConfirmed(codeMatch, phoneMatch, mpesaMessage.trim())
       
       // Reset form
       setMpesaCode("")
       setMpesaPhone("")
       setMpesaMessage("")
-      
-      // Close modal after brief delay
-      await new Promise((r) => setTimeout(r, 500))
-      handleClose()
     } catch (error) {
       console.error("[v0] M-Pesa confirmation error:", error)
       alert("Error processing payment. Please try again.")
-    } finally {
       setIsConfirming(false)
     }
   }
+
 
   const handleClose = () => {
     setMpesaCode("")
