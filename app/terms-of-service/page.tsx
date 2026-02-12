@@ -13,21 +13,17 @@ async function getPolicy() {
 export async function generateMetadata(): Promise<Metadata> {
   const p = await getPolicy()
   return {
-    title: p?.meta_title || "Terms of Service | Kallittos Fashions",
-    description: p?.meta_description || "Read the terms and conditions governing your use of the Kallittos Fashions website.",
-    alternates: { canonical: "https://kallittofashions.com/terms-of-service" },
-    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["terms of service", "kallittos fashions"],
-    authors: [
-      { name: "Kallittos Fashions", url: "https://kallittofashions.com" },
-      { name: "OnePlusAfrica Tech Solutions", url: "https://oneplusafrica.com/" },
-    ],
-    creator: "OnePlusAfrica Tech Solutions",
-    alternates: { canonical: "https://kallittofashions.com/terms-of-service" },
+    title: p?.meta_title || "Terms of Service | Classy Collections",
+    description: p?.meta_description || "Read the terms and conditions governing your use of the Classy Collections website.",
+    alternates: { canonical: "https://classycollections.com/terms-of-service" },
+    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["terms of service", "classy collections"],
+    authors: [{ name: "Classy Collections", url: "https://classycollections.com" }],
+    creator: "Classy Collections",
     openGraph: {
-      title: p?.meta_title || "Terms of Service | Kallittos Fashions",
-      description: p?.meta_description || "Read the terms and conditions governing your use of the Kallittos Fashions website.",
-      url: "https://kallittofashions.com/terms-of-service",
-      siteName: "Kallittos Fashions",
+      title: p?.meta_title || "Terms of Service | Classy Collections",
+      description: p?.meta_description || "Read the terms and conditions governing your use of the Classy Collections website.",
+      url: "https://classycollections.com/terms-of-service",
+      siteName: "Classy Collections",
       type: "website",
     },
   }

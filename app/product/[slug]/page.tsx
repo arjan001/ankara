@@ -60,7 +60,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         description: product.description,
         url: `${SITE_URL}/product/${slug}`,
         image: product.images,
-        brand: { "@type": "Brand", name: "Kallittos Fashions" },
+        brand: { "@type": "Brand", name: "Classy Collections" },
         offers: {
           "@type": "Offer",
           price: product.price,
@@ -70,7 +70,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             : "https://schema.org/OutOfStock",
           seller: {
             "@type": "Organization",
-            name: "Kallittos Fashions",
+            name: "Classy Collections",
             url: SITE_URL,
           },
           itemCondition: product.condition === "thrift"

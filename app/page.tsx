@@ -49,8 +49,8 @@ export default function Page() {
             "@context": "https://schema.org",
             "@type": "WebPage",
             name: "Classy Collections",
-            description: "Curated thrift & brand-new denim online store in Kenya",
-            url: "https://kallittofashions.com",
+            description: "Premium authentic Ankara fashion online store in Kenya",
+            url: "https://classycollections.com",
             mainEntity: {
               "@type": "LocalBusiness",
               name: "Classy Collections",

@@ -2,27 +2,27 @@ import { DeliveryPage } from "@/components/store/delivery-page"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Delivery Locations & Rates",
+  title: "Delivery Locations & Rates | Classy Collections",
   description:
-    "Kallittos Fashions delivery locations and shipping rates across Kenya. Free shipping on orders above KSh 5,000. Same-day delivery available in Nairobi CBD. Pay via M-PESA or cash on delivery.",
-  alternates: { canonical: "https://kallittofashions.com/delivery" },
+    "Classy Collections delivery locations and shipping rates across Kenya. Affordable Ankara fashion delivery. Pay via M-PESA or cash on delivery.",
+  alternates: { canonical: "https://classycollections.com/delivery" },
   keywords: [
-    "Kallittos Fashions delivery", "denim delivery Nairobi", "free shipping Kenya",
-    "same-day delivery Nairobi", "thrift fashion shipping",
+    "Classy Collections delivery", "ankara delivery Kenya", "fashion delivery Nairobi",
+    "shipping rates Kenya", "fashion shipping Kenya",
   ],
   openGraph: {
-    title: "Delivery Locations & Rates | Kallittos Fashions",
-    description: "Free shipping on orders above KSh 5,000. Same-day delivery in Nairobi. M-PESA accepted.",
-    url: "https://kallittofashions.com/delivery",
+    title: "Delivery Locations & Rates | Classy Collections",
+    description: "Affordable Ankara fashion delivery across Kenya. M-PESA accepted.",
+    url: "https://classycollections.com/delivery",
     type: "website",
-    siteName: "Kallittos Fashions",
+    siteName: "Classy Collections",
     locale: "en_KE",
-    images: [{ url: "https://kallittofashions.com/logo-kf.png", width: 512, height: 512, alt: "Kallittos Fashions Delivery" }],
+    images: [{ url: "https://classycollections.com/logo.png", width: 512, height: 512, alt: "Classy Collections Delivery" }],
   },
   twitter: {
     card: "summary",
-    title: "Delivery Locations & Rates | Kallittos Fashions",
-    description: "Free shipping on orders above KSh 5,000. Same-day delivery in Nairobi.",
+    title: "Delivery Locations & Rates | Classy Collections",
+    description: "Affordable Ankara fashion delivery across Kenya.",
   },
 }
 

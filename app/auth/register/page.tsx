@@ -149,7 +149,7 @@ export default function RegisterPage() {
 
           <div>
             <Label htmlFor="email" className="text-sm font-medium mb-1.5 block">Email</Label>
-            <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="admin@kallitosfashion.com" className="h-11" required />
+            <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="admin@classycollections.com" className="h-11" required />
           </div>
 
           <div>

@@ -100,58 +100,6 @@ function AnkaraCarousel({ banner }: { banner: HeroBanner }) {
   )
 }
 
-function BabyshopCarousel({ banner }: { banner: HeroBanner }) {
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % ANKARA_CAROUSEL_IMAGES.length)
-  }, [])
-
-  useEffect(() => {
-    const interval = setInterval(nextSlide, 4000)
-    return () => clearInterval(interval)
-  }, [nextSlide])
-
-  return (
-    <Link
-      href={banner.linkUrl}
-      className="lg:col-span-8 relative overflow-hidden rounded-sm min-h-[400px] lg:min-h-[520px] flex items-end group"
-    >
-      <div className="absolute inset-0 z-0">
-        {ANKARA_CAROUSEL_IMAGES.map((src, i) => (
-          <div
-            key={src}
-            className="absolute inset-0 transition-opacity duration-700"
-            style={{ opacity: i === currentSlide ? 1 : 0 }}
-          >
-            <Image
-              src={src}
-              alt={`${banner.title} - carousel slide ${i + 1}`}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-700"
-              priority={i === 0}
-            />
-          </div>
-        ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
-      </div>
-      <div className="relative z-10 p-8 lg:p-12 w-full">
-        <p className="text-background/80 text-xs tracking-[0.3em] uppercase mb-2">Baby Essentials</p>
-        <h1 className="text-background text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
-          {banner.title}
-        </h1>
-        <p className="text-background/70 text-sm mt-3 leading-relaxed max-w-md">
-          {banner.subtitle}
-        </p>
-        <span className="inline-flex items-center gap-2 mt-5 bg-background text-foreground px-7 py-3 text-sm font-medium group-hover:bg-background/90 transition-colors">
-          {banner.buttonText}
-          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-        </span>
-      </div>
-    </Link>
-  )
-}
-
 export function Hero() {
   const { data: banners } = useSWR<HeroBanner[]>("/api/hero-banners", fetcher)
   const items = banners && banners.length >= 3 ? banners : FALLBACK_BANNERS

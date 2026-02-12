@@ -322,7 +322,7 @@ export function AdminOrders() {
                     {selectedOrder.notes && <p className="text-xs text-muted-foreground italic mt-2">Note: {selectedOrder.notes}</p>}
                   </div>
                   <a
-                    href={`https://wa.me/${selectedOrder.phone.replace(/\D/g, "").replace(/^0/, "254")}?text=${encodeURIComponent(`Hi ${selectedOrder.customer.split(" ")[0]}, regarding your order ${selectedOrder.orderNo} at Kallittos Fashion.`)}`}
+                    href={`https://wa.me/${selectedOrder.phone.replace(/\D/g, "").replace(/^0/, "254")}?text=${encodeURIComponent(`Hi ${selectedOrder.customer.split(" ")[0]}, regarding your order ${selectedOrder.orderNo} at Classy Collections.`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-shrink-0 inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20BD5A] text-white text-xs font-medium px-3 py-2 rounded-sm transition-colors"
