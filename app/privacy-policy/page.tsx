@@ -1,11 +1,18 @@
-import { createAdminClient } from "@/lib/supabase/admin"
+import { createClient } from "@supabase/supabase-js"
 import type { Metadata } from "next"
 import { TopBar } from "@/components/store/top-bar"
 import { Navbar } from "@/components/store/navbar"
 import { Footer } from "@/components/store/footer"
 
 async function getPolicy() {
-  const supabase = createAdminClient()
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    return null
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey)
   const { data } = await supabase.from("policies").select("*").eq("slug", "privacy-policy").single()
   return data
 }
@@ -49,3 +56,4 @@ export default async function PrivacyPolicyPage() {
     </div>
   )
 }
+
