@@ -11,6 +11,13 @@ function mapProduct(row: Record<string, unknown>, images: Record<string, unknown
     .sort((a, b) => (a.sort_order as number) - (b.sort_order as number))
     .map((img) => (img.image_url || img.url) as string)
 
+  // Fallback to gallery_images array if product_images table is empty
+  const finalImages = productImages.length > 0 
+    ? productImages 
+    : Array.isArray(row.gallery_images) 
+      ? (row.gallery_images as string[])
+      : []
+
   const variationsList = variations
     .filter((v) => v.product_id === row.id)
     .map((v) => ({
@@ -24,7 +31,7 @@ function mapProduct(row: Record<string, unknown>, images: Record<string, unknown
     slug: row.slug as string,
     price: Number(row.price),
     originalPrice: row.original_price ? Number(row.original_price) : undefined,
-    images: productImages.length > 0 ? productImages : ["/placeholder.svg?height=800&width=600"],
+    images: finalImages.length > 0 ? finalImages : ["/placeholder.svg?height=800&width=600"],
     category: (row as Record<string, unknown> & { categories?: { name: string; slug: string } }).categories?.name || "",
     categorySlug: (row as Record<string, unknown> & { categories?: { name: string; slug: string } }).categories?.slug || "",
     description: (row.description as string) || "",
