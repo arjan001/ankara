@@ -299,26 +299,40 @@ export async function createOrder(order: {
 }
 
 export async function getHeroBanners(): Promise<HeroBanner[]> {
-  const supabase = await createClient()
+  try {
+    const supabase = await createClient()
 
-  const { data } = await supabase
-    .from("hero_banners")
-    .select("*")
-    .eq("is_active", true)
-    .order("sort_order", { ascending: true })
+    const { data, error } = await supabase
+      .from("hero_banners")
+      .select("id, title, subtitle, image_url, button_link, button_text, sort_order")
+      .eq("is_active", true)
+      .order("sort_order", { ascending: true })
+      .limit(3)
 
-  if (!data) return []
+    if (error) {
+      console.error("[v0] Error fetching hero banners:", error.message)
+      return []
+    }
 
-  return data.map((b) => ({
-    id: b.id,
-    title: b.title,
-    subtitle: b.subtitle || "",
-    collection: b.collection,
-    bannerImage: b.image_url || b.banner_image || `/banners/${b.collection}-collection.jpg`,
-    linkUrl: b.button_link || b.link_url,
-    buttonText: b.button_text || "Shop Now",
-    sortOrder: b.sort_order,
-  }))
+    if (!data || data.length === 0) {
+      console.log("[v0] No active hero banners found in database")
+      return []
+    }
+
+    return data.map((b) => ({
+      id: b.id,
+      title: b.title || "Ankara Collection",
+      subtitle: b.subtitle || "Discover premium African fashion",
+      collection: "ankara-collection",
+      bannerImage: b.image_url || "/banners/hero-ankara-main.jpg",
+      linkUrl: b.button_link || "/shop",
+      buttonText: b.button_text || "Shop Now",
+      sortOrder: b.sort_order || 0,
+    }))
+  } catch (error) {
+    console.error("[v0] Exception in getHeroBanners:", error)
+    return []
+  }
 }
 
 export async function getProductsByCollection(collection: string): Promise<Product[]> {

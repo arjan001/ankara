@@ -51,7 +51,7 @@ export function Navbar() {
       setSuggestions([])
       setShowSuggestions(false)
     }
-  }, [searchQuery, allProducts])
+  }, [searchQuery, allProducts.length])
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
