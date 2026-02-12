@@ -19,9 +19,8 @@ interface HeroBannerData {
   id: string
   title: string
   subtitle: string | null
-  collection: string
-  banner_image: string | null
-  link_url: string
+  image_url: string | null
+  button_link: string
   button_text: string
   is_active: boolean
   sort_order: number
@@ -62,10 +61,10 @@ export function AdminBanners() {
   const { data: heroBanners = [], mutate: mutateHero } = useSWR<HeroBannerData[]>("/api/admin/hero-banners", fetcher)
   const [heroModal, setHeroModal] = useState(false)
   const [editHero, setEditHero] = useState<HeroBannerData | null>(null)
-  const [heroForm, setHeroForm] = useState({ title: "", subtitle: "", collection: "men", bannerImage: "", linkUrl: "/shop/men", buttonText: "Shop Now" })
+  const [heroForm, setHeroForm] = useState({ title: "", subtitle: "", imageUrl: "", buttonLink: "/shop", buttonText: "Shop Now" })
 
-  const openHeroNew = () => { setEditHero(null); setHeroForm({ title: "", subtitle: "", collection: "men", bannerImage: "", linkUrl: "/shop/men", buttonText: "Shop Now" }); setHeroModal(true) }
-  const openHeroEdit = (h: HeroBannerData) => { setEditHero(h); setHeroForm({ title: h.title, subtitle: h.subtitle || "", collection: h.collection, bannerImage: h.banner_image || "", linkUrl: h.link_url, buttonText: h.button_text || "Shop Now" }); setHeroModal(true) }
+  const openHeroNew = () => { setEditHero(null); setHeroForm({ title: "", subtitle: "", imageUrl: "", buttonLink: "/shop", buttonText: "Shop Now" }); setHeroModal(true) }
+  const openHeroEdit = (h: HeroBannerData) => { setEditHero(h); setHeroForm({ title: h.title, subtitle: h.subtitle || "", imageUrl: h.image_url || "", buttonLink: h.button_link || "/shop", buttonText: h.button_text || "Shop Now" }); setHeroModal(true) }
   const saveHero = async () => {
     try {
       const response = await fetch("/api/admin/hero-banners", {
@@ -90,7 +89,7 @@ export function AdminBanners() {
     }
   }
   const toggleHero = async (h: HeroBannerData) => {
-    await fetch("/api/admin/hero-banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: h.id, title: h.title, subtitle: h.subtitle, collection: h.collection, bannerImage: h.banner_image, linkUrl: h.link_url, buttonText: h.button_text, isActive: !h.is_active, sortOrder: h.sort_order }) })
+    await fetch("/api/admin/hero-banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: h.id, title: h.title, subtitle: h.subtitle, imageUrl: h.image_url, buttonLink: h.button_link, buttonText: h.button_text, isActive: !h.is_active, sortOrder: h.sort_order }) })
     mutateHero()
   }
 
@@ -233,12 +232,11 @@ export function AdminBanners() {
             {heroBanners.map((h) => (
               <div key={h.id} className="flex items-center gap-4 border border-border rounded-sm p-4">
                 <div className="relative w-32 h-20 bg-secondary rounded-sm overflow-hidden flex-shrink-0">
-                  <Image src={h.banner_image || `/banners/${h.collection}-collection.jpg`} alt={h.title} fill className="object-cover" />
+                  <Image src={h.image_url || "/banners/hero-ankara-main.jpg"} alt={h.title} fill className="object-cover" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-sm font-semibold truncate">{h.title}</h3>
-                  <p className="text-xs text-muted-foreground">Collection: <span className="capitalize font-medium text-foreground">{h.collection}</span></p>
-                  <p className="text-xs text-muted-foreground">Link: {h.link_url} -- Button: {h.button_text}</p>
+                  <p className="text-xs text-muted-foreground">Link: {h.button_link} -- Button: {h.button_text}</p>
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch checked={h.is_active} onCheckedChange={() => toggleHero(h)} />
@@ -377,24 +375,25 @@ export function AdminBanners() {
         <DialogContent className="max-w-md bg-background text-foreground">
           <DialogHeader><DialogTitle className="font-serif">{editHero ? "Edit" : "Add"} Hero Banner</DialogTitle></DialogHeader>
           <div className="space-y-4 mt-4">
-            <div><Label className="text-sm font-medium mb-1.5 block">Title *</Label><Input value={heroForm.title} onChange={(e) => setHeroForm({ ...heroForm, title: e.target.value })} placeholder="Men's Collection" /></div>
-            <div><Label className="text-sm font-medium mb-1.5 block">Subtitle</Label><Input value={heroForm.subtitle} onChange={(e) => setHeroForm({ ...heroForm, subtitle: e.target.value })} placeholder="Rugged denim for the modern man" /></div>
+            <div><Label className="text-sm font-medium mb-1.5 block">Title *</Label><Input value={heroForm.title} onChange={(e) => setHeroForm({ ...heroForm, title: e.target.value })} placeholder="Premium Ankara Dresses" /></div>
+            <div><Label className="text-sm font-medium mb-1.5 block">Subtitle</Label><Input value={heroForm.subtitle} onChange={(e) => setHeroForm({ ...heroForm, subtitle: e.target.value })} placeholder="Discover vibrant Ankara fashion" /></div>
             <div>
-              <Label className="text-sm font-medium mb-1.5 block">Collection *</Label>
-              <div className="flex gap-2">
-                {["men", "women", "babyshop"].map((c) => (
-                  <Button key={c} variant={heroForm.collection === c ? "default" : "outline"} size="sm" onClick={() => setHeroForm({ ...heroForm, collection: c, linkUrl: `/shop/${c}` })} className={heroForm.collection === c ? "bg-foreground text-background capitalize" : "bg-transparent capitalize"}>{c}</Button>
-                ))}
-              </div>
+              <Label className="text-sm font-medium mb-1.5 block">Banner Image</Label>
+              <Input value={heroForm.imageUrl} onChange={(e) => setHeroForm({ ...heroForm, imageUrl: e.target.value })} placeholder="/banners/hero-ankara-main.jpg" />
+              <p className="text-[11px] text-muted-foreground mt-1">Available: /banners/hero-ankara-main.jpg, /banners/ankara-dresses-banner.jpg, /banners/ankara-new-arrivals-banner.jpg</p>
+              {heroForm.imageUrl && (
+                <div className="relative w-full h-28 mt-2 rounded-sm overflow-hidden bg-secondary">
+                  <Image src={heroForm.imageUrl} alt="Preview" fill className="object-cover" />
+                </div>
+              )}
             </div>
-            <div><Label className="text-sm font-medium mb-1.5 block">Banner Image URL</Label><Input value={heroForm.bannerImage} onChange={(e) => setHeroForm({ ...heroForm, bannerImage: e.target.value })} placeholder="Leave empty for default collection image" /></div>
             <div className="grid grid-cols-2 gap-4">
-              <div><Label className="text-sm font-medium mb-1.5 block">Link URL</Label><Input value={heroForm.linkUrl} onChange={(e) => setHeroForm({ ...heroForm, linkUrl: e.target.value })} /></div>
+              <div><Label className="text-sm font-medium mb-1.5 block">Button Link</Label><Input value={heroForm.buttonLink} onChange={(e) => setHeroForm({ ...heroForm, buttonLink: e.target.value })} placeholder="/shop" /></div>
               <div><Label className="text-sm font-medium mb-1.5 block">Button Text</Label><Input value={heroForm.buttonText} onChange={(e) => setHeroForm({ ...heroForm, buttonText: e.target.value })} /></div>
             </div>
             <div className="flex justify-end gap-3 pt-4 border-t border-border">
               <Button variant="outline" onClick={() => setHeroModal(false)} className="bg-transparent">Cancel</Button>
-              <Button onClick={saveHero} disabled={!heroForm.title || !heroForm.collection} className="bg-foreground text-background hover:bg-foreground/90">{editHero ? "Update" : "Add"}</Button>
+              <Button onClick={saveHero} disabled={!heroForm.title} className="bg-foreground text-background hover:bg-foreground/90">{editHero ? "Update" : "Add"}</Button>
             </div>
           </div>
         </DialogContent>

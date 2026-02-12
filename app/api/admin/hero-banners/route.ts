@@ -24,9 +24,8 @@ export async function POST(req: NextRequest) {
   const { error } = await supabase.from("hero_banners").insert({
     title: body.title,
     subtitle: body.subtitle || null,
-    collection: body.collection,
-    banner_image: body.bannerImage || null,
-    link_url: body.linkUrl || `/shop/${body.collection}`,
+    image_url: body.imageUrl || null,
+    button_link: body.buttonLink || "/shop",
     button_text: body.buttonText || "Shop Now",
     is_active: body.isActive ?? true,
     sort_order: body.sortOrder ?? 0,
@@ -48,9 +47,8 @@ export async function PUT(req: NextRequest) {
     .update({
       title: body.title,
       subtitle: body.subtitle || null,
-      collection: body.collection,
-      banner_image: body.bannerImage || null,
-      link_url: body.linkUrl || `/shop/${body.collection}`,
+      image_url: body.imageUrl || null,
+      button_link: body.buttonLink || "/shop",
       button_text: body.buttonText || "Shop Now",
       is_active: body.isActive ?? true,
       sort_order: body.sortOrder ?? 0,
