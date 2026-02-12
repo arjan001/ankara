@@ -4,29 +4,32 @@ import { TopBar } from "@/components/store/top-bar"
 import { Navbar } from "@/components/store/navbar"
 import { Footer } from "@/components/store/footer"
 import { TrackOrderForm } from "@/components/store/track-order-form"
+import { PAGE_SEO, SITE_SEO } from "@/lib/seo-data"
 
 export const metadata: Metadata = {
-  title: "Track My Order | Classy Collections",
-  description:
-    "Track your Classy Collections order in real time. Enter your order number or phone number to see the status of your Ankara fashion delivery across Kenya.",
-  alternates: { canonical: "https://classycollections.com/track-order" },
+  title: PAGE_SEO.trackOrder.title,
+  description: PAGE_SEO.trackOrder.description,
+  robots: { index: PAGE_SEO.trackOrder.noindex ? false : true, follow: true },
+  alternates: { canonical: `${SITE_SEO.siteUrl}/track-order` },
   keywords: [
     "track order Classy Collections", "ankara delivery tracking", "order status Kenya",
     "Classy Collections order status", "fashion delivery Kenya", "check order status",
+    "delivery tracking Nairobi", "order tracking Kenya", "Classy Collections delivery",
   ],
   openGraph: {
-    title: "Track My Order | Classy Collections",
-    description: "Track your Ankara fashion order in real time. Enter your order number or phone to check delivery status.",
-    url: "https://classycollections.com/track-order",
+    title: PAGE_SEO.trackOrder.title,
+    description: PAGE_SEO.trackOrder.description,
+    url: `${SITE_SEO.siteUrl}/track-order`,
     type: "website",
-    siteName: "Classy Collections",
+    siteName: SITE_SEO.siteName,
     locale: "en_KE",
-    images: [{ url: "https://classycollections.com/logo.png", width: 512, height: 512, alt: "Classy Collections Order Tracking" }],
+    images: [{ url: `${SITE_SEO.siteUrl}/logo.png`, width: 512, height: 512, alt: "Classy Collections Order Tracking" }],
   },
   twitter: {
     card: "summary",
-    title: "Track My Order | Classy Collections",
-    description: "Track your Ankara fashion delivery in real time across Kenya.",
+    title: PAGE_SEO.trackOrder.title,
+    description: PAGE_SEO.trackOrder.description,
+    creator: `@${SITE_SEO.twitter}`,
   },
 }
 
@@ -54,3 +57,4 @@ export default function TrackOrderPage() {
     </>
   )
 }
+

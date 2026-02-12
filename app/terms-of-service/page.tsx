@@ -1,11 +1,19 @@
-import { createAdminClient } from "@/lib/supabase/admin"
+import { createClient } from "@supabase/supabase-js"
 import type { Metadata } from "next"
 import { TopBar } from "@/components/store/top-bar"
 import { Navbar } from "@/components/store/navbar"
 import { Footer } from "@/components/store/footer"
+import { PAGE_SEO, SITE_SEO } from "@/lib/seo-data"
 
 async function getPolicy() {
-  const supabase = createAdminClient()
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    return null
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey)
   const { data } = await supabase.from("policies").select("*").eq("slug", "terms-of-service").single()
   return data
 }
@@ -13,18 +21,26 @@ async function getPolicy() {
 export async function generateMetadata(): Promise<Metadata> {
   const p = await getPolicy()
   return {
-    title: p?.meta_title || "Terms of Service | Classy Collections",
-    description: p?.meta_description || "Read the terms and conditions governing your use of the Classy Collections website.",
-    alternates: { canonical: "https://classycollections.com/terms-of-service" },
-    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["terms of service", "classy collections"],
-    authors: [{ name: "Classy Collections", url: "https://classycollections.com" }],
-    creator: "Classy Collections",
+    title: p?.meta_title || PAGE_SEO.termsOfService.title,
+    description: p?.meta_description || PAGE_SEO.termsOfService.description,
+    robots: { index: PAGE_SEO.termsOfService.noindex ? false : true, follow: true },
+    alternates: { canonical: `${SITE_SEO.siteUrl}/terms-of-service` },
+    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["terms of service", "terms and conditions", "Classy Collections"],
+    authors: [{ name: SITE_SEO.siteName, url: SITE_SEO.siteUrl }],
+    creator: SITE_SEO.siteName,
     openGraph: {
-      title: p?.meta_title || "Terms of Service | Classy Collections",
-      description: p?.meta_description || "Read the terms and conditions governing your use of the Classy Collections website.",
-      url: "https://classycollections.com/terms-of-service",
-      siteName: "Classy Collections",
+      title: p?.meta_title || PAGE_SEO.termsOfService.title,
+      description: p?.meta_description || PAGE_SEO.termsOfService.description,
+      url: `${SITE_SEO.siteUrl}/terms-of-service`,
+      siteName: SITE_SEO.siteName,
       type: "website",
+      locale: "en_KE",
+    },
+    twitter: {
+      card: "summary",
+      title: p?.meta_title || PAGE_SEO.termsOfService.title,
+      description: p?.meta_description || PAGE_SEO.termsOfService.description,
+      creator: `@${SITE_SEO.twitter}`,
     },
   }
 }

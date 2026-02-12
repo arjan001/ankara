@@ -14,15 +14,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const desc = product.description.slice(0, 155) + (product.description.length > 155 ? "..." : "")
     return {
       title: `${product.name} | Classy Collections`,
-      description: `${desc} | Shop premium Ankara fashion at Classy Collections.`,
+      description: `${desc} Premium ready-made Ankara wear. Order now at Classy Collections for authentic African fashion delivered across Kenya.`,
       keywords: [
-        product.name, "Classy Collections", "ankara fashion Kenya",
-        "authentic ankara", "african print", "buy ankara online Kenya",
-        product.category || "", "ankara dresses", "ankara suits",
+        product.name, "Classy Collections", "ankara fashion Kenya", "authentic ankara", "african print",
+        "buy ankara online Kenya", product.category || "", "ankara dresses", "ankara suits",
+        "premium African wear", "ready-made Ankara", "African print fashion Kenya",
+        product.tags?.join(", ") || "", "Classy Collections Nairobi",
       ],
       alternates: {
         canonical: `${SITE_URL}/product/${slug}`,
       },
+      authors: [{ name: "Classy Collections", url: SITE_URL }],
+      creator: "Classy Collections",
       openGraph: {
         title: `${product.name} | Classy Collections`,
         description: `${desc} Premium African Ankara Fashion.`,
