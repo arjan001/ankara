@@ -147,7 +147,7 @@ export function TrackOrderForm({ initialOrderNumber }: { initialOrderNumber?: st
         <form onSubmit={handleSearch} className="flex gap-3">
           <Input
             type="text"
-            placeholder={searchType === "order" ? "e.g. KF-20260210-A1B2" : "e.g. 0713 809 695"}
+            placeholder={searchType === "order" ? "e.g. CC-20260210-A1B2" : "e.g. 0702 642 324"}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             className="h-12 text-sm"

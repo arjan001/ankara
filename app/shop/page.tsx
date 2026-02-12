@@ -3,31 +3,31 @@ import { ShopPage } from "@/components/store/shop-page"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Shop Thrift Jeans & Denim | Kallittos Fashions Kenya",
+  title: "Shop Premium Ankara Fashion | Classy Collections Kenya",
   description:
-    "Browse Kallittos Fashions full collection of curated thrift & brand-new mom jeans, skinny jeans, boyfriend jeans, denim shorts, wide-leg denim & more. Best denim designs in Kenya. Filter by category, size, and price. Delivered across Nairobi & Kenya.",
-  alternates: { canonical: "https://kallittofashions.com/shop" },
+    "Browse Classy Collections full selection of premium Ankara fashion. Men's suits, women's dresses, kimonos, palazzo, tops, and shirts. Quality African print clothing with new arrivals weekly. Delivered across Kenya and East Africa.",
+  alternates: { canonical: "https://classycollections.com/shop" },
   keywords: [
-    "kallittosfashions shop", "buy thrift jeans online Kenya", "shop denim Nairobi",
-    "mom jeans Kenya", "skinny jeans Nairobi", "boyfriend jeans Kenya", "ripped jeans Kenya",
-    "denim shorts Kenya", "best jeans Kenya", "affordable jeans Nairobi",
-    "mtumba jeans online", "thrift denim collection", "premium thrift jeans",
-    "women jeans Kenya", "plus size jeans Nairobi", "Kenya denim online shop",
+    "classy collections shop", "ankara fashion Kenya", "shop ankara dresses", "buy ankara suits",
+    "women ankara dresses", "men ankara suits", "ankara kimonos Kenya", "ankara palazzo pants",
+    "african print clothing", "authentic ankara fashion", "best ankara designs Kenya",
+    "ankara fashion online", "premium ankara wear", "ready-made ankara suits",
+    "casual ankara outfits", "formal ankara wear", "affordable ankara fashion",
   ],
   openGraph: {
-    title: "Shop Thrift Jeans & Denim | Kallittos Fashions Kenya",
-    description: "Best curated thrift & new denim in Kenya. Mom jeans, skinny, boyfriend, shorts & more. Delivered across Nairobi & Kenya.",
-    url: "https://kallittofashions.com/shop",
+    title: "Shop Premium Ankara Fashion | Classy Collections",
+    description: "Premium Ankara suits, dresses, kimonos, and more. Quality African print fashion delivered across Kenya and East Africa.",
+    url: "https://classycollections.com/shop",
     type: "website",
-    siteName: "Kallittos Fashions",
+    siteName: "Classy Collections",
     locale: "en_KE",
-    images: [{ url: "https://kallittofashions.com/logo-kf.png", width: 512, height: 512, alt: "Kallittos Fashions Shop" }],
+    images: [{ url: "https://classycollections.com/logo.png", width: 512, height: 512, alt: "Classy Collections Shop" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Shop Thrift Jeans & Denim | Kallittos Fashions Kenya",
-    description: "Best curated thrift & new denim in Kenya. Delivered across Nairobi & Kenya.",
-    images: ["https://kallittofashions.com/logo-kf.png"],
+    title: "Shop Premium Ankara Fashion | Classy Collections",
+    description: "Premium Ankara suits, dresses, kimonos, and more delivered across Kenya and East Africa.",
+    images: ["https://classycollections.com/logo.png"],
   },
 }
 

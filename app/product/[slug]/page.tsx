@@ -4,44 +4,44 @@ import type { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
 
-const SITE_URL = "https://kallittofashions.com"
+const SITE_URL = "https://classycollections.com"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
   try {
     const product = await getProductBySlug(slug)
-    if (!product) return { title: "Product Not Found | Kallittos Fashions" }
+    if (!product) return { title: "Product Not Found | Classy Collections" }
     const desc = product.description.slice(0, 155) + (product.description.length > 155 ? "..." : "")
     return {
-      title: `${product.name} | Kallittos Fashions`,
-      description: `${desc} | Shop curated thrift & new denim at Kallittos Fashions.`,
+      title: `${product.name} | Classy Collections`,
+      description: `${desc} | Shop premium Ankara fashion at Classy Collections.`,
       keywords: [
-        product.name, "Kallittos Fashions", "thrift denim Kenya",
-        "curated denim", "sustainable fashion", "buy jeans online Kenya",
-        product.category || "", "thrift jeans Nairobi",
+        product.name, "Classy Collections", "ankara fashion Kenya",
+        "authentic ankara", "african print", "buy ankara online Kenya",
+        product.category || "", "ankara dresses", "ankara suits",
       ],
       alternates: {
         canonical: `${SITE_URL}/product/${slug}`,
       },
       openGraph: {
-        title: `${product.name} | Kallittos Fashions`,
-        description: `${desc} Style meets sustainability.`,
+        title: `${product.name} | Classy Collections`,
+        description: `${desc} Premium African Ankara Fashion.`,
         url: `${SITE_URL}/product/${slug}`,
-        images: product.images[0] ? [{ url: product.images[0], width: 600, height: 800, alt: `${product.name} - Kallittos Fashions` }] : [],
+        images: product.images[0] ? [{ url: product.images[0], width: 600, height: 800, alt: `${product.name} - Classy Collections` }] : [],
         type: "website",
-        siteName: "Kallittos Fashions",
+        siteName: "Classy Collections",
         locale: "en_KE",
       },
       twitter: {
         card: "summary_large_image",
-        title: `${product.name} | Kallittos Fashions`,
+        title: `${product.name} | Classy Collections`,
         description: desc,
         images: product.images[0] ? [product.images[0]] : [],
-        creator: "@kallittos",
+        creator: "@_classycollections",
       },
     }
   } catch {
-    return { title: "Product Not Found | Kallittos Fashions" }
+    return { title: "Product Not Found | Classy Collections" }
   }
 }
 
