@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin"
 import { NextResponse } from "next/server"
 
 export async function POST(request: Request) {
-  // Verify requesting user is super_admin
+  // Verify requesting user is admin or higher (admin, super_admin, or editor)
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -14,8 +14,10 @@ export async function POST(request: Request) {
     .eq("email", user.email)
     .single()
 
-  if (currentUser?.role !== "super_admin") {
-    return NextResponse.json({ error: "Only super admins can add users" }, { status: 403 })
+  // Allow admin, super_admin, and editor roles to register users
+  const allowedRoles = ["super_admin", "admin", "editor"]
+  if (!currentUser || !allowedRoles.includes(currentUser.role)) {
+    return NextResponse.json({ error: "Only admins and editors can add users" }, { status: 403 })
   }
 
   const { email, displayName, password, role } = await request.json()
@@ -26,6 +28,11 @@ export async function POST(request: Request) {
 
   if (password.length < 6) {
     return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 })
+  }
+
+  // Editors can only create viewers
+  if (currentUser.role === "editor" && role !== "viewer") {
+    return NextResponse.json({ error: "Editors can only create viewer accounts" }, { status: 403 })
   }
 
   const adminClient = createAdminClient()
