@@ -44,6 +44,7 @@ function getRoleBadge(role: string) {
 
 export function UsersManagement() {
   const { data: users = [], mutate } = useSWR<AdminUser[]>("/api/admin/users", fetcher)
+  const [currentUserRole, setCurrentUserRole] = React.useState<string | null>(null)
   const [editUser, setEditUser] = useState<AdminUser | null>(null)
   const [editForm, setEditForm] = useState({ display_name: "", role: "", is_active: true })
   const [saving, setSaving] = useState(false)
@@ -53,6 +54,14 @@ export function UsersManagement() {
   const [inviting, setInviting] = useState(false)
   const [inviteError, setInviteError] = useState("")
   const [inviteSuccess, setInviteSuccess] = useState(false)
+
+  // Fetch current user's role
+  React.useEffect(() => {
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((data) => setCurrentUserRole(data.role || null))
+      .catch(() => setCurrentUserRole(null))
+  }, [])
 
   const openEdit = (u: AdminUser) => {
     setEditUser(u)
@@ -138,16 +147,23 @@ export function UsersManagement() {
     <AdminShell title="Users & Roles">
       <div className="space-y-8">
 
-        {/* Header */}
+        {/* Header with Permissions Info */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-serif font-bold">Users & Roles</h1>
             <p className="text-sm text-muted-foreground mt-1">{users.length} team member{users.length !== 1 ? "s" : ""}</p>
           </div>
-          <Button onClick={() => { setShowInvite(true); setInviteError(""); setInviteSuccess(false) }} className="bg-foreground text-background hover:bg-foreground/90">
-            <UserPlus className="h-4 w-4 mr-2" />
-            Add Team Member
-          </Button>
+          <div className="flex items-center gap-3">
+            {currentUserRole === "editor" && (
+              <div className="text-xs text-muted-foreground bg-amber-500/10 px-3 py-2 rounded-sm border border-amber-200">
+                Editors can only create Viewer accounts
+              </div>
+            )}
+            <Button onClick={() => { setShowInvite(true); setInviteError(""); setInviteSuccess(false) }} className="bg-foreground text-background hover:bg-foreground/90">
+              <UserPlus className="h-4 w-4 mr-2" />
+              Add Team Member
+            </Button>
+          </div>
         </div>
 
         {/* Role Legend Cards */}
@@ -419,17 +435,26 @@ export function UsersManagement() {
                 <Select value={inviteForm.role} onValueChange={(v) => setInviteForm({ ...inviteForm, role: v })}>
                   <SelectTrigger className="h-10"><SelectValue /></SelectTrigger>
                   <SelectContent>
-                    {ROLES.map((r) => (
-                      <SelectItem key={r.value} value={r.value}>
-                        <div className="flex items-center gap-2">
-                          <r.icon className="h-3.5 w-3.5" />
-                          <span>{r.label}</span>
-                          <span className="text-[10px] text-muted-foreground ml-1">- {r.description}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
+                    {ROLES.map((r) => {
+                      // Editors can only create viewers
+                      if (currentUserRole === "editor" && r.value !== "viewer") return null
+                      return (
+                        <SelectItem key={r.value} value={r.value}>
+                          <div className="flex items-center gap-2">
+                            <r.icon className="h-3.5 w-3.5" />
+                            <span>{r.label}</span>
+                            <span className="text-[10px] text-muted-foreground ml-1">- {r.description}</span>
+                          </div>
+                        </SelectItem>
+                      )
+                    })}
                   </SelectContent>
                 </Select>
+                {currentUserRole === "editor" && (
+                  <p className="text-xs text-amber-700 mt-1.5 bg-amber-500/10 px-2 py-1 rounded border border-amber-200">
+                    Editors can only create Viewer accounts for read-only access.
+                  </p>
+                )}
               </div>
               <div className="flex justify-end gap-2 pt-3 border-t border-border">
                 <Button type="button" variant="outline" className="bg-transparent" onClick={() => setShowInvite(false)}>Cancel</Button>

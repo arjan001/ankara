@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Loader2, AlertCircle, Eye, EyeOff, CheckCircle, Lock } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -15,6 +16,7 @@ export default function RegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "admin",
   })
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -55,7 +57,7 @@ export default function RegisterPage() {
         emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL || `${window.location.origin}/admin`,
         data: {
           display_name: form.displayName,
-          role: "super_admin",
+          role: form.role,
         },
       },
     })
@@ -87,7 +89,7 @@ export default function RegisterPage() {
           </div>
           <h1 className="text-2xl font-serif font-bold">Registration Closed</h1>
           <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-            The admin account has already been set up. New team members can only be added by the Super Admin through the admin dashboard.
+            The admin account has already been set up. New team members can only be added by any admin through the admin dashboard.
           </p>
           <div className="mt-6 flex flex-col gap-3">
             <Link href="/auth/login">
@@ -150,6 +152,21 @@ export default function RegisterPage() {
           <div>
             <Label htmlFor="email" className="text-sm font-medium mb-1.5 block">Email</Label>
             <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="admin@classycollections.com" className="h-11" required />
+          </div>
+
+          <div>
+            <Label htmlFor="role" className="text-sm font-medium mb-1.5 block">Role</Label>
+            <Select value={form.role} onValueChange={(value) => setForm({ ...form, role: value })}>
+              <SelectTrigger className="h-11">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="super_admin">Super Admin - Full Access</SelectItem>
+                <SelectItem value="admin">Admin - Manage Products & Orders</SelectItem>
+                <SelectItem value="editor">Editor - Add & Edit Products</SelectItem>
+                <SelectItem value="viewer">Viewer - View Only</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div>
