@@ -50,6 +50,7 @@ export const metadata: Metadata = {
   ],
   authors: [
     { name: "Classy Collections", url: "https://classycollections.com" },
+    { name: "OnePlus Africa Tech Solutions", url: "http://oneplusafrica.com/" },
   ],
   creator: "Classy Collections",
   publisher: "Classy Collections",
@@ -88,6 +89,8 @@ export const metadata: Metadata = {
   other: {
     "instagram:creator": "@_classycollections",
     "tiktok:creator": "@_classycollections",
+    "developer": "OnePlus Africa Tech Solutions",
+    "developer-website": "http://oneplusafrica.com/",
   },
 }
 

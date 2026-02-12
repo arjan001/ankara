@@ -1,9 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { AdminShell } from "./admin-shell"
 import { formatPrice } from "@/lib/format"
-import { TrendingUp, TrendingDown, Users, ShoppingBag, Eye, DollarSign, ArrowUpRight, ArrowDownRight, ChevronLeft, ChevronRight, Globe, Monitor, Smartphone, Tablet } from "lucide-react"
+import { TrendingUp, TrendingDown, Users, ShoppingBag, Eye, DollarSign, ArrowUpRight, ArrowDownRight, ChevronLeft, ChevronRight, Globe, Monitor, Smartphone, Tablet, Activity } from "lucide-react"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import useSWR from "swr"
@@ -27,14 +27,28 @@ interface VisitorData {
   browsers: { browser: string; count: number; percentage: number }[]
   countries: { country: string; count: number; percentage: number }[]
   referrers: { source: string; count: number }[]
+  realTimeUsers?: number
 }
 
 export function AdminAnalytics() {
   const { data: orders = [] } = useSWR<Order[]>("/api/admin/orders", fetcher)
   const { data: products = [] } = useSWR<Product[]>("/api/products", fetcher)
   const { data: visitors } = useSWR<VisitorData>("/api/admin/analytics?days=30", fetcher)
+  const [realTimeUsers, setRealTimeUsers] = useState(0)
   const [prodPage, setProdPage] = useState(1)
   const [activityPage, setActivityPage] = useState(1)
+
+  // Real-time user tracking with pulse effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch("/api/admin/analytics/realtime")
+        .then((r) => r.json())
+        .then((data) => setRealTimeUsers(data.activeUsers || 0))
+        .catch(() => setRealTimeUsers(0))
+    }, 5000) // Update every 5 seconds
+
+    return () => clearInterval(interval)
+  }, [])
 
   // Only confirmed orders count as sales (confirmed, dispatched, delivered)
   const saleStatuses = ["confirmed", "dispatched", "delivered"]
@@ -49,7 +63,7 @@ export function AdminAnalytics() {
     { label: "Sales Revenue", value: formatPrice(totalRevenue), change: `${totalSales} confirmed sales`, up: totalSales > 0, icon: DollarSign },
     { label: "Total Orders", value: totalOrders.toString(), change: `${orders.filter(o => o.status === "pending").length} pending`, up: true, icon: ShoppingBag },
     { label: "Page Views", value: visitors?.totalViews.toString() || "0", change: `${viewChange >= 0 ? "+" : ""}${viewChange}% vs prev`, up: viewChange >= 0, icon: Eye },
-    { label: "Unique Visitors", value: visitors?.uniqueSessions.toString() || "0", change: `${products.length} products live`, up: true, icon: Users },
+    { label: "Active Users Now", value: realTimeUsers.toString(), change: "Real-time visitors", up: true, icon: Activity },
   ]
 
   // Revenue by month from confirmed sales only

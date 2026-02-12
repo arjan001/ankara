@@ -180,9 +180,21 @@ export function Footer() {
               </Link>
             </div>
           </div>
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center space-y-2">
             <p className="text-background/30 text-[11px]">
               Classy Collections - Premium African Ankara Fashion
+            </p>
+            <p className="text-background/25 text-[10px]">
+              Website designed and built by{" "}
+              <a
+                href="http://oneplusafrica.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-background/40 transition-colors underline"
+              >
+                OnePlus Africa Tech Solutions
+              </a>
+              {" - Innovative Web Development & Digital Solutions for African Businesses"}
             </p>
           </div>
         </div>
