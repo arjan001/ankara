@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { TopBar } from "@/components/store/top-bar"
 import { Navbar } from "@/components/store/navbar"
 import { Footer } from "@/components/store/footer"
+import { PAGE_SEO, SITE_SEO } from "@/lib/seo-data"
 
 async function getPolicy() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -20,18 +21,26 @@ async function getPolicy() {
 export async function generateMetadata(): Promise<Metadata> {
   const p = await getPolicy()
   return {
-    title: p?.meta_title || "Privacy Policy | Classy Collections",
-    description: p?.meta_description || "Learn how Classy Collections collects, uses, and protects your personal information.",
-    alternates: { canonical: "https://classycollections.com/privacy-policy" },
-    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["privacy policy", "classy collections"],
-    authors: [{ name: "Classy Collections", url: "https://classycollections.com" }],
-    creator: "Classy Collections",
+    title: p?.meta_title || PAGE_SEO.privacyPolicy.title,
+    description: p?.meta_description || PAGE_SEO.privacyPolicy.description,
+    robots: { index: PAGE_SEO.privacyPolicy.noindex ? false : true, follow: true },
+    alternates: { canonical: `${SITE_SEO.siteUrl}/privacy-policy` },
+    keywords: p?.meta_keywords?.split(",").map((k: string) => k.trim()) || ["privacy policy", "data protection", "Classy Collections"],
+    authors: [{ name: SITE_SEO.siteName, url: SITE_SEO.siteUrl }],
+    creator: SITE_SEO.siteName,
     openGraph: {
-      title: p?.meta_title || "Privacy Policy | Classy Collections",
-      description: p?.meta_description || "Learn how Classy Collections collects, uses, and protects your personal information.",
-      url: "https://classycollections.com/privacy-policy",
-      siteName: "Classy Collections",
+      title: p?.meta_title || PAGE_SEO.privacyPolicy.title,
+      description: p?.meta_description || PAGE_SEO.privacyPolicy.description,
+      url: `${SITE_SEO.siteUrl}/privacy-policy`,
+      siteName: SITE_SEO.siteName,
       type: "website",
+      locale: "en_KE",
+    },
+    twitter: {
+      card: "summary",
+      title: p?.meta_title || PAGE_SEO.privacyPolicy.title,
+      description: p?.meta_description || PAGE_SEO.privacyPolicy.description,
+      creator: `@${SITE_SEO.twitter}`,
     },
   }
 }
