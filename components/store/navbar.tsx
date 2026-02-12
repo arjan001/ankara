@@ -233,9 +233,8 @@ export function Navbar() {
             <nav className="flex items-center gap-8">
               <Link href="/" className="text-sm font-medium hover:text-muted-foreground transition-colors">Home</Link>
               <Link href="/shop" className="text-sm font-medium hover:text-muted-foreground transition-colors">Shop</Link>
-              <Link href="/shop/men" className="text-sm font-medium hover:text-muted-foreground transition-colors">Men</Link>
-              <Link href="/shop/women" className="text-sm font-medium hover:text-muted-foreground transition-colors">Women</Link>
-              <BabyshopNavLink />
+              <Link href="/shop?category=men" className="text-sm font-medium hover:text-muted-foreground transition-colors">Men</Link>
+              <Link href="/shop?category=women" className="text-sm font-medium hover:text-muted-foreground transition-colors">Women</Link>
               <Link href="/shop?filter=new" className="text-sm font-medium hover:text-muted-foreground transition-colors">New Arrivals</Link>
               <Link href="/shop?filter=offers" className="text-sm font-medium hover:text-muted-foreground transition-colors">On Offer</Link>
               <Link href="/track-order" className="text-sm font-medium hover:text-muted-foreground transition-colors">Track My Order</Link>
