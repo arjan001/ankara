@@ -1,9 +1,12 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Trash2, Download, Mail } from "lucide-react"
+import { usePagination } from "@/hooks/use-pagination"
+import { PaginationControls } from "@/components/pagination-controls"
 import { AdminShell } from "./admin-shell"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import useSWR from "swr"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -18,6 +21,15 @@ interface Subscriber {
 export function NewsletterComponent() {
   const { data: subscribers = [], mutate } = useSWR<Subscriber[]>("/api/admin/newsletter", fetcher)
   const [deleting, setDeleting] = useState(false)
+  const [search, setSearch] = useState("")
+
+  const filtered = subscribers.filter((s) =>
+    s.email.toLowerCase().includes(search.toLowerCase())
+  )
+
+  const { paginatedItems, currentPage, totalPages, totalItems, itemsPerPage, goToPage, changePerPage, resetPage } = usePagination(filtered, { defaultPerPage: 15 })
+
+  useEffect(() => { resetPage() }, [search])
 
   const handleDelete = async (id: string) => {
     if (!confirm("Remove this subscriber?")) return
@@ -68,6 +80,11 @@ export function NewsletterComponent() {
           </Button>
         </div>
 
+        <div className="relative max-w-sm">
+          <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input placeholder="Search by email..." value={search} onChange={(e) => setSearch(e.target.value)} className="pl-10 h-10" />
+        </div>
+
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-secondary rounded-sm p-4">
             <p className="text-sm text-muted-foreground">Total Subscribers</p>
@@ -102,7 +119,7 @@ export function NewsletterComponent() {
                     </td>
                   </tr>
                 ) : (
-                  subscribers.map((subscriber) => (
+                  paginatedItems.map((subscriber) => (
                     <tr key={subscriber.id} className="border-b border-border hover:bg-secondary/50 transition-colors">
                       <td className="px-4 py-3 font-medium">{subscriber.email}</td>
                       <td className="px-4 py-3">
@@ -139,6 +156,16 @@ export function NewsletterComponent() {
             </table>
           </div>
         </div>
+
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={goToPage}
+          onItemsPerPageChange={changePerPage}
+          perPageOptions={[10, 15, 25, 50]}
+        />
       </div>
     </AdminShell>
   )

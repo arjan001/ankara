@@ -1,9 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { toast } from "sonner"
 import { Plus, Pencil, Trash2, Search } from "lucide-react"
+import { usePagination } from "@/hooks/use-pagination"
+import { PaginationControls } from "@/components/pagination-controls"
 import { AdminShell } from "./admin-shell"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -40,6 +42,10 @@ export function AdminCategories() {
   const filtered = cats.filter((c) =>
     c.name.toLowerCase().includes(search.toLowerCase())
   )
+
+  const { paginatedItems, currentPage, totalPages, totalItems, itemsPerPage, goToPage, changePerPage, resetPage } = usePagination(filtered, { defaultPerPage: 12 })
+
+  useEffect(() => { resetPage() }, [search])
 
   const openNew = () => { setEditId(null); setForm(emptyForm); setIsOpen(true) }
   const openEdit = (cat: AdminCategory) => {
@@ -89,7 +95,7 @@ export function AdminCategories() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filtered.map((cat) => (
+          {paginatedItems.map((cat) => (
             <div key={cat.id} className="border border-border rounded-sm overflow-hidden group">
               <div className="relative aspect-[4/3] bg-secondary">
                 <Image src={cat.image || "/placeholder.svg"} alt={cat.name} fill className="object-cover" />
@@ -113,6 +119,16 @@ export function AdminCategories() {
             </div>
           ))}
         </div>
+
+        <PaginationControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalItems={totalItems}
+          itemsPerPage={itemsPerPage}
+          onPageChange={goToPage}
+          onItemsPerPageChange={changePerPage}
+          perPageOptions={[6, 12, 24]}
+        />
       </div>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

@@ -23,18 +23,15 @@ export async function POST(request: NextRequest) {
     const deviceType = parser.getDevice().type || "desktop"
 
     const country = request.headers.get("x-vercel-ip-country") || ""
-    const city = request.headers.get("x-vercel-ip-city") || ""
 
     const supabase = createClient()
     const { error } = await supabase.from("page_views").insert({
       page_path: sanitize(body.path || "/", 500),
       referrer: sanitize(body.referrer || "", 2000),
       user_agent: userAgent.slice(0, 500),
-      country,
-      city,
+      country: country || null,
       device_type: deviceType,
       browser,
-      session_id: sanitize(body.sessionId || "", 100),
     })
 
     if (error) {
