@@ -11,8 +11,8 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 const ANKARA_CAROUSEL_IMAGES = [
   "/banners/hero-ankara-main.jpg",
-  "/images/products/green-black-midi-1.jpg",
-  "/images/products/red-organza-party-1.jpg",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blue-white-african-ankara-print-plus-size-clothing-party-dress-435554-4htvoFTBgJR1myaOCHvUom98ShGAQL.jpeg",
+  "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/green-gold-multi-african-ankara-print-plus-size-short-party-dress-407943-Ykn226QRyD5Bp2QSLNuywdZn9IYrWR.jpeg",
 ]
 
 const FALLBACK_BANNERS: HeroBanner[] = [

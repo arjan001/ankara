@@ -14,11 +14,13 @@ const COLLECTIONS = [
 ]
 
 const CATEGORY_IMAGES: Record<string, string> = {
-  "ankara-dresses": "/images/products/green-black-midi-1.jpg",
-  "ankara-party": "/images/products/red-organza-party-1.jpg",
-  "ankara-kimonos": "/images/products/orange-blue-party-1.jpg",
-  "ankara-tops": "/images/products/red-brown-bulb-1.jpg",
-  "ankara-suits": "/banners/ankara-dresses-banner.jpg",
+  "women-ankara-dresses": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blue-white-african-ankara-print-plus-size-clothing-party-dress-435554-4htvoFTBgJR1myaOCHvUom98ShGAQL.jpeg",
+  "women-ankara-tops": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Orange_Blue_Long_African_Ankara_Print_Party_Dress3%20%289%29-9q76hpXKmzKFsE1KNcVszo6ey574IO.jpeg",
+  "women-ankara-kimonos": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/AfricanankaraPlussizedress_africanclothing_dashikidress_ankaradress_ankaradress_printdress_africanprintdress_africanclothing_maxiwrapdress_madetomeasure_custommade69-rpakakX2tJ3EK5PWbS7X7uwDJ0O9Td.jpeg",
+  "women-ankara-suits": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/REDMULTIPLUSSIZEAFRICANANKARAPRINTFITTEDPARTYORGANZADRESS1_f65366fe-139f-4b9d-ac06-d61694a2d999%20%281%29-jnHPFzZLpoVSIZa3U9ghnqdC2Gjr1n.jpeg",
+  "women-ankara-palazzo": "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/green-gold-multi-african-ankara-print-plus-size-short-party-dress-407943-Ykn226QRyD5Bp2QSLNuywdZn9IYrWR.jpeg",
+  "men-ankara-suits": "/banners/ankara-dresses-banner.jpg",
+  "men-ankara-shirts": "/banners/ankara-new-arrivals-banner.jpg",
 }
 
 export function CategoriesSection() {
