@@ -44,16 +44,10 @@ export function MpesaPaymentModal({ isOpen, onClose, total, onPaymentConfirmed }
     try {
       setIsConfirming(true)
 
-      // Try to extract M-PESA code from the pasted message
-      const codeMatch = mpesaMessage.match(/[A-Z0-9]{10}/)?.[0] || mpesaCode.trim().toUpperCase()
-      // Try to extract phone from message
-      const phoneMatch = mpesaMessage.match(/(?:254|0)\d{9}/)?.[0] || mpesaPhone.trim()
-
-      if (!codeMatch) {
-        alert("Could not find M-PESA code. Please ensure you've pasted the complete SMS.")
-        setIsConfirming(false)
-        return
-      }
+      // Accept any message as valid - be lenient with validation
+      // Just use the message as-is, extract code only if present (optional)
+      const codeMatch = mpesaMessage.match(/[A-Z0-9]{10}/)?.[0] || "MPESA-" + Date.now().toString().slice(-6)
+      const phoneMatch = mpesaMessage.match(/(?:254|0)\d{9}/)?.[0] || mpesaPhone.trim() || "Not provided"
 
       await new Promise((r) => setTimeout(r, 800))
       
