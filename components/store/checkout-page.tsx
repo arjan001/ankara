@@ -140,8 +140,6 @@ export function CheckoutPage() {
   }
 
   const handleMpesaConfirmed = async (mpesaCode: string, mpesaPhone: string, mpesaMessage: string) => {
-    setShowMpesa(false)
-    setIsSubmitting(true)
     try {
       const payload = {
         ...buildOrderPayload("mpesa"),
@@ -151,22 +149,37 @@ export function CheckoutPage() {
         mpesaMessage,
         status: "pending",
       }
+
+      console.log("[v0] Submitting M-PESA order:", payload)
+
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       })
+
       const data = await res.json()
-      if (res.ok) {
-        setOrderResult({ orderNumber: data.orderNumber, paymentMethod: "mpesa" })
-        clearCart()
+      console.log("[v0] M-PESA order response:", res.status, data)
+
+      if (!res.ok) {
+        console.error("[v0] M-PESA order error:", data)
+        alert("Error placing order: " + (data.error || "Unknown error"))
+        setShowMpesa(false)
+        return
       }
+
+      // Order created successfully
+      console.log("[v0] Order created:", data.orderNumber)
+      setOrderResult({ orderNumber: data.orderNumber, paymentMethod: "mpesa" })
+      clearCart()
+      setShowMpesa(false)
     } catch (err) {
-      console.error("M-Pesa order failed:", err)
-    } finally {
-      setIsSubmitting(false)
+      console.error("[v0] M-PESA order exception:", err)
+      alert("Error processing payment: " + (err instanceof Error ? err.message : "Unknown error"))
+      setShowMpesa(false)
     }
   }
+
 
   // Modern order success screen
   if (orderResult) {
