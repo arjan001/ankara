@@ -19,28 +19,6 @@ function formatPrice(price: number): string {
   return `KSh ${price.toLocaleString()}`
 }
 
-function BabyshopNavLink() {
-  const [showTooltip, setShowTooltip] = useState(false)
-  return (
-    <div className="relative group">
-      <Link
-        href="/shop/ankara-suits"
-        className="text-sm font-medium text-primary hover:text-secondary transition-colors"
-        onMouseEnter={() => setShowTooltip(true)}
-        onMouseLeave={() => setShowTooltip(false)}
-      >
-        Premium Ankara
-      </Link>
-      {showTooltip && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-foreground text-background px-3 py-2 rounded-sm text-xs whitespace-nowrap z-50 pointer-events-none">
-          Handcrafted Authentic African Fashion
-          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
-        </div>
-      )}
-    </div>
-  )
-}
-
 export function Navbar() {
   const router = useRouter()
   const { totalItems, setIsCartOpen } = useCart()
@@ -154,9 +132,8 @@ export function Navbar() {
                 {categoriesOpen && (
                   <div className="absolute top-full left-0 mt-1 w-52 bg-background border border-border shadow-lg rounded-sm z-50">
                     <p className="px-4 pt-3 pb-1 text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Collections</p>
-                    <Link href="/shop/men" className="block px-4 py-2.5 text-sm font-medium hover:bg-secondary transition-colors" onClick={() => setCategoriesOpen(false)}>Men</Link>
-                    <Link href="/shop/women" className="block px-4 py-2.5 text-sm font-medium hover:bg-secondary transition-colors" onClick={() => setCategoriesOpen(false)}>Women</Link>
-                    <BabyshopNavLink />
+                    <Link href="/shop?category=men" className="block px-4 py-2.5 text-sm font-medium hover:bg-secondary transition-colors" onClick={() => setCategoriesOpen(false)}>Men</Link>
+                    <Link href="/shop?category=women" className="block px-4 py-2.5 text-sm font-medium hover:bg-secondary transition-colors" onClick={() => setCategoriesOpen(false)}>Women</Link>
                     <div className="border-t border-border my-1" />
                     <p className="px-4 pt-2 pb-1 text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Categories</p>
                     {categories.map((cat) => (
@@ -165,7 +142,7 @@ export function Navbar() {
                   </div>
                 )}
               </div>
-              <input type="text" placeholder="Search jeans, jackets, dungarees..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="flex-1 h-10 px-4 bg-secondary text-sm text-foreground placeholder:text-muted-foreground outline-none" />
+              <input type="text" placeholder="Search Ankara, suits, dresses..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="flex-1 h-10 px-4 bg-secondary text-sm text-foreground placeholder:text-muted-foreground outline-none" />
               <button type="submit" className="h-10 px-4 bg-foreground text-background rounded-r-sm"><Search className="h-4 w-4" /></button>
 
               {showSuggestions && (
@@ -256,9 +233,8 @@ export function Navbar() {
             <nav className="flex items-center gap-8">
               <Link href="/" className="text-sm font-medium hover:text-muted-foreground transition-colors">Home</Link>
               <Link href="/shop" className="text-sm font-medium hover:text-muted-foreground transition-colors">Shop</Link>
-              <Link href="/shop/men" className="text-sm font-medium hover:text-muted-foreground transition-colors">Men</Link>
-              <Link href="/shop/women" className="text-sm font-medium hover:text-muted-foreground transition-colors">Women</Link>
-              <BabyshopNavLink />
+              <Link href="/shop?category=men" className="text-sm font-medium hover:text-muted-foreground transition-colors">Men</Link>
+              <Link href="/shop?category=women" className="text-sm font-medium hover:text-muted-foreground transition-colors">Women</Link>
               <Link href="/shop?filter=new" className="text-sm font-medium hover:text-muted-foreground transition-colors">New Arrivals</Link>
               <Link href="/shop?filter=offers" className="text-sm font-medium hover:text-muted-foreground transition-colors">On Offer</Link>
               <Link href="/track-order" className="text-sm font-medium hover:text-muted-foreground transition-colors">Track My Order</Link>
