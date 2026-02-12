@@ -15,7 +15,7 @@ export function OfferBanner() {
             className="relative overflow-hidden rounded-sm min-h-[280px] flex items-center group"
           >
             <Image
-              src="/images/products/green-black-midi-1.jpg"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/blue-white-african-ankara-print-plus-size-clothing-party-dress-435554-4htvoFTBgJR1myaOCHvUom98ShGAQL.jpeg"
               alt="Ankara collection on offer"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -44,7 +44,7 @@ export function OfferBanner() {
             className="relative overflow-hidden rounded-sm min-h-[280px] flex items-center group"
           >
             <Image
-              src="/images/products/orange-blue-party-1.jpg"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/green-gold-multi-african-ankara-print-plus-size-short-party-dress-407943-Ykn226QRyD5Bp2QSLNuywdZn9IYrWR.jpeg"
               alt="New Ankara arrivals"
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-700"

@@ -33,9 +33,8 @@ export async function POST(request: NextRequest) {
         is_on_offer: body.isOnOffer || false,
         offer_percentage: body.offerPercentage || 0,
         in_stock: body.inStock ?? true,
-        collection: body.collection || "unisex",
-        is_featured: false,
-        condition: "new",
+        collection: body.collection || "women",
+        featured: body.featured || false,
       })
       .select()
       .single()
@@ -44,32 +43,24 @@ export async function POST(request: NextRequest) {
 
     // Insert images
     if (body.images?.length) {
-      const imageRows = body.images.map((url: string, i: number) => ({
+      const imageRows = body.images.map((imgUrl: string, i: number) => ({
         product_id: product.id,
-        url,
+        image_url: imgUrl,
         alt_text: `${body.name} - Image ${i + 1}`,
         sort_order: i,
+        is_primary: i === 0,
       }))
       await supabase.from("product_images").insert(imageRows)
     }
 
     // Insert variations
     if (body.variations?.length) {
-      const variationRows: { product_id: string; label: string; value: string; extra_price: number; in_stock: boolean }[] = []
-      for (const v of body.variations) {
-        for (const opt of v.options) {
-          variationRows.push({
-            product_id: product.id,
-            label: v.type,
-            value: opt,
-            extra_price: 0,
-            in_stock: true,
-          })
-        }
-      }
-      if (variationRows.length) {
-        await supabase.from("product_variations").insert(variationRows)
-      }
+      const variationRows = body.variations.map((v: { type: string; options: string[] }) => ({
+        product_id: product.id,
+        type: v.type,
+        options: v.options,
+      }))
+      await supabase.from("product_variations").insert(variationRows)
     }
 
     return NextResponse.json({ id: product.id })
@@ -118,11 +109,12 @@ export async function PUT(request: NextRequest) {
     // Replace images
     await supabase.from("product_images").delete().eq("product_id", body.id)
     if (body.images?.length) {
-      const imageRows = body.images.map((url: string, i: number) => ({
+      const imageRows = body.images.map((imgUrl: string, i: number) => ({
         product_id: body.id,
-        url,
+        image_url: imgUrl,
         alt_text: `${body.name} - Image ${i + 1}`,
         sort_order: i,
+        is_primary: i === 0,
       }))
       await supabase.from("product_images").insert(imageRows)
     }
@@ -130,21 +122,12 @@ export async function PUT(request: NextRequest) {
     // Replace variations
     await supabase.from("product_variations").delete().eq("product_id", body.id)
     if (body.variations?.length) {
-      const variationRows: { product_id: string; label: string; value: string; extra_price: number; in_stock: boolean }[] = []
-      for (const v of body.variations) {
-        for (const opt of v.options) {
-          variationRows.push({
-            product_id: body.id,
-            label: v.type,
-            value: opt,
-            extra_price: 0,
-            in_stock: true,
-          })
-        }
-      }
-      if (variationRows.length) {
-        await supabase.from("product_variations").insert(variationRows)
-      }
+      const variationRows = body.variations.map((v: { type: string; options: string[] }) => ({
+        product_id: body.id,
+        type: v.type,
+        options: v.options,
+      }))
+      await supabase.from("product_variations").insert(variationRows)
     }
 
     return NextResponse.json({ id: body.id })

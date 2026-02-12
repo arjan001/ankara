@@ -9,21 +9,14 @@ function mapProduct(row: Record<string, unknown>, images: Record<string, unknown
   const productImages = images
     .filter((img) => img.product_id === row.id)
     .sort((a, b) => (a.sort_order as number) - (b.sort_order as number))
-    .map((img) => img.url as string)
+    .map((img) => (img.image_url || img.url) as string)
 
-  const productVariations = variations
+  const variationsList = variations
     .filter((v) => v.product_id === row.id)
-    .reduce<Record<string, Set<string>>>((acc, v) => {
-      const label = v.label as string
-      if (!acc[label]) acc[label] = new Set()
-      acc[label].add(v.value as string)
-      return acc
-    }, {})
-
-  const variationsList = Object.entries(productVariations).map(([type, options]) => ({
-    type,
-    options: Array.from(options),
-  }))
+    .map((v) => ({
+      type: (v.type || v.label) as string,
+      options: Array.isArray(v.options) ? v.options as string[] : [v.value as string],
+    }))
 
   return {
     id: row.id as string,

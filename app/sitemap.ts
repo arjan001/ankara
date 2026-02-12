@@ -1,10 +1,21 @@
 import type { MetadataRoute } from "next"
-import { createAdminClient } from "@/lib/supabase/admin"
+import { createClient } from "@supabase/supabase-js"
 
 const SITE_URL = "https://classycollections.com"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const supabase = createAdminClient()
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+  if (!supabaseUrl || !supabaseKey) {
+    // Return static pages only if no Supabase credentials
+    return [
+      { url: SITE_URL, lastModified: new Date(), changeFrequency: "daily", priority: 1.0 },
+      { url: `${SITE_URL}/shop`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    ]
+  }
+
+  const supabase = createClient(supabaseUrl, supabaseKey)
 
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
