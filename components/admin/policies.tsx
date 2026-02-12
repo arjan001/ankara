@@ -1,13 +1,12 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback } from "react"
-import { AdminShell } from "./admin-shell"
-import { Save, Loader2, Eye, FileText, Search, ChevronRight, Bold, Italic, Underline, List, ListOrdered, Link2, Heading2, Undo2, Redo2, Code } from "lucide-react"
+import { Save, Loader2, Eye, FileText, Search, ChevronRight, Bold, Italic, Underline, List, ListOrdered, Link2, Heading2, Undo2, Redo2, Code, Plus, Trash2, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { toast } from "sonner"
+import useSWR from "swr"
 
 interface Policy {
   id: string
@@ -17,9 +16,12 @@ interface Policy {
   meta_title: string
   meta_description: string
   meta_keywords: string
-  last_updated: string
-  updated_by: string
+  is_published: boolean
+  created_at: string
+  updated_at: string
 }
+
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
 const TOOLBAR_ACTIONS = [
   { cmd: "bold", icon: Bold, label: "Bold" },
@@ -67,7 +69,6 @@ function RichEditor({ value, onChange }: { value: string; onChange: (html: strin
 
   return (
     <div className="border border-border rounded-sm overflow-hidden">
-      {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-0.5 px-2 py-1.5 bg-secondary/50 border-b border-border">
         {TOOLBAR_ACTIONS.map((action, i) => {
           if (action.cmd === "divider") {
@@ -105,7 +106,6 @@ function RichEditor({ value, onChange }: { value: string; onChange: (html: strin
         </button>
       </div>
 
-      {/* Editable area */}
       <div
         ref={editorRef}
         contentEditable
@@ -118,98 +118,126 @@ function RichEditor({ value, onChange }: { value: string; onChange: (html: strin
 }
 
 export function AdminPolicies() {
-  const [policies, setPolicies] = useState<Policy[]>([])
+  const { data: policies = [], mutate } = useSWR<Policy[]>("/api/admin/policies", fetcher)
   const [selected, setSelected] = useState<Policy | null>(null)
-  const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const [error, setError] = useState("")
 
-  // Editable fields
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [metaTitle, setMetaTitle] = useState("")
-  const [metaDesc, setMetaDesc] = useState("")
-  const [metaKeywords, setMetaKeywords] = useState("")
+  // Form state
+  const [form, setForm] = useState({
+    slug: "",
+    title: "",
+    content: "",
+    meta_title: "",
+    meta_description: "",
+    meta_keywords: "",
+    is_published: true,
+  })
 
   useEffect(() => {
-    fetch("/api/policies")
-      .then((r) => r.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          setPolicies(data)
-          if (data.length > 0) selectPolicy(data[0])
-        }
-      })
-      .finally(() => setLoading(false))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    if (policies.length > 0 && !selected) {
+      selectPolicy(policies[0])
+    }
+  }, [policies, selected])
 
   const selectPolicy = (p: Policy) => {
     setSelected(p)
-    setTitle(p.title)
-    setContent(p.content)
-    setMetaTitle(p.meta_title || "")
-    setMetaDesc(p.meta_description || "")
-    setMetaKeywords(p.meta_keywords || "")
+    setForm({
+      slug: p.slug,
+      title: p.title,
+      content: p.content,
+      meta_title: p.meta_title,
+      meta_description: p.meta_description,
+      meta_keywords: p.meta_keywords,
+      is_published: p.is_published,
+    })
     setShowPreview(false)
+    setError("")
   }
 
   const handleSave = async () => {
-    if (!selected) return
+    if (!form.slug || !form.title || !form.content) {
+      setError("Slug, title, and content are required")
+      return
+    }
+
     setSaving(true)
+    setError("")
+
     try {
-      const res = await fetch(`/api/policies/${selected.slug}`, {
-        method: "PUT",
+      const payload = selected ? { id: selected.id, ...form } : form
+      const res = await fetch("/api/admin/policies", {
+        method: selected ? "PUT" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          content,
-          meta_title: metaTitle,
-          meta_description: metaDesc,
-          meta_keywords: metaKeywords,
-        }),
+        body: JSON.stringify(payload),
       })
-      if (res.ok) {
-        const updated = await res.json()
-        setPolicies((prev) => prev.map((p) => (p.slug === selected.slug ? updated : p)))
-        setSelected(updated)
-        toast.success("Policy saved successfully")
-      } else {
-        toast.error("Failed to save policy")
+
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || "Failed to save policy")
       }
-    } catch {
-      toast.error("Error saving policy")
+
+      mutate()
+      if (!selected) {
+        setForm({ slug: "", title: "", content: "", meta_title: "", meta_description: "", meta_keywords: "", is_published: true })
+      }
+    } catch (err: any) {
+      setError(err.message || "An error occurred")
     } finally {
       setSaving(false)
     }
   }
 
-  if (loading) {
-    return (
-      <AdminShell title="Policies">
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-        </div>
-      </AdminShell>
-    )
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this policy?")) return
+
+    setDeleting(true)
+    setError("")
+
+    try {
+      const res = await fetch(`/api/admin/policies?id=${id}`, { method: "DELETE" })
+
+      if (!res.ok) {
+        const err = await res.json()
+        throw new Error(err.error || "Failed to delete policy")
+      }
+
+      if (selected?.id === id) {
+        setSelected(null)
+        setForm({ slug: "", title: "", content: "", meta_title: "", meta_description: "", meta_keywords: "", is_published: true })
+      }
+      mutate()
+    } catch (err: any) {
+      setError(err.message || "An error occurred")
+    } finally {
+      setDeleting(false)
+    }
   }
 
   return (
-    <AdminShell title="Policies">
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-serif font-bold">Policies</h1>
-        <p className="text-sm text-muted-foreground mt-1">Manage your store policies. Changes are live on the website immediately.</p>
+        <h1 className="text-2xl font-serif font-bold">Policies Management</h1>
+        <p className="text-sm text-muted-foreground mt-1">Manage Terms, Privacy, Refund, Cookie, and other legal policies</p>
       </div>
-      {/* Policy tabs */}
+
+      {error && (
+        <div className="flex items-center gap-2 bg-red-50 text-red-700 text-sm p-4 rounded-md border border-red-200">
+          <AlertCircle className="h-4 w-4 flex-shrink-0" />
+          {error}
+        </div>
+      )}
+
       <div className="flex flex-wrap gap-2">
         {policies.map((p) => (
           <button
-            key={p.slug}
+            key={p.id}
             type="button"
             onClick={() => selectPolicy(p)}
             className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium rounded-sm border transition-colors ${
-              selected?.slug === p.slug
+              selected?.id === p.id
                 ? "bg-foreground text-background border-foreground"
                 : "bg-background text-muted-foreground border-border hover:text-foreground hover:border-foreground/30"
             }`}
@@ -220,14 +248,13 @@ export function AdminPolicies() {
         ))}
       </div>
 
-      {selected && (
+      {selected ? (
         <div className="space-y-6">
-          {/* Header bar */}
           <div className="flex items-center justify-between flex-wrap gap-3">
             <div>
               <h2 className="text-lg font-semibold">{selected.title}</h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                /{selected.slug} -- Last saved: {selected.last_updated ? new Date(selected.last_updated).toLocaleString() : "Never"}
+                /{selected.slug} • Updated: {new Date(selected.updated_at).toLocaleString()}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -235,77 +262,78 @@ export function AdminPolicies() {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowPreview(!showPreview)}
-                className="bg-transparent"
               >
                 <Eye className="h-3.5 w-3.5 mr-1.5" />
                 {showPreview ? "Edit" : "Preview"}
               </Button>
-              <a
-                href={`/${selected.slug}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleDelete(selected.id)}
+                disabled={deleting}
+                className="text-red-600"
               >
-                View Page <ChevronRight className="h-3 w-3" />
-              </a>
+                <Trash2 className="h-3.5 w-3.5" />
+              </Button>
               <Button onClick={handleSave} disabled={saving} size="sm">
                 {saving ? <Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> : <Save className="h-3.5 w-3.5 mr-1.5" />}
-                {saving ? "Saving..." : "Save Changes"}
+                {saving ? "Saving..." : "Save"}
               </Button>
             </div>
           </div>
 
-          {/* SEO fields */}
           <div className="border border-border rounded-sm p-4 space-y-4">
             <div className="flex items-center gap-2 mb-1">
               <Search className="h-4 w-4 text-muted-foreground" />
               <h3 className="text-sm font-semibold">SEO Metadata</h3>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label className="text-xs font-medium mb-1 block">Page Title</Label>
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="h-9 text-sm"
-                />
-              </div>
-              <div>
-                <Label className="text-xs font-medium mb-1 block">Meta Title (SEO)</Label>
-                <Input
-                  value={metaTitle}
-                  onChange={(e) => setMetaTitle(e.target.value)}
-                  className="h-9 text-sm"
-                  placeholder="Title shown in search results"
-                />
-              </div>
+            <div>
+              <Label className="text-xs font-medium mb-1 block">Meta Title</Label>
+              <Input
+                value={form.meta_title}
+                onChange={(e) => setForm({ ...form, meta_title: e.target.value })}
+                placeholder="Title shown in search results"
+                className="h-9 text-sm"
+              />
             </div>
 
             <div>
               <Label className="text-xs font-medium mb-1 block">Meta Description</Label>
               <Textarea
-                value={metaDesc}
-                onChange={(e) => setMetaDesc(e.target.value)}
+                value={form.meta_description}
+                onChange={(e) => setForm({ ...form, meta_description: e.target.value })}
                 rows={2}
                 className="text-sm"
-                placeholder="Description shown in search results (150-160 chars)"
+                placeholder="Description shown in search results"
               />
-              <p className="text-[10px] text-muted-foreground mt-0.5">{metaDesc.length}/160 characters</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">{form.meta_description.length}/160 characters</p>
             </div>
 
             <div>
-              <Label className="text-xs font-medium mb-1 block">Meta Keywords (comma-separated)</Label>
+              <Label className="text-xs font-medium mb-1 block">Meta Keywords</Label>
               <Input
-                value={metaKeywords}
-                onChange={(e) => setMetaKeywords(e.target.value)}
-                className="h-9 text-sm"
+                value={form.meta_keywords}
+                onChange={(e) => setForm({ ...form, meta_keywords: e.target.value })}
                 placeholder="keyword1, keyword2, keyword3"
+                className="h-9 text-sm"
               />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="is_published"
+                checked={form.is_published}
+                onChange={(e) => setForm({ ...form, is_published: e.target.checked })}
+                className="h-4 w-4"
+              />
+              <Label htmlFor="is_published" className="text-sm font-medium cursor-pointer">
+                Publish this policy
+              </Label>
             </div>
           </div>
 
-          {/* Content editor / preview */}
           {showPreview ? (
             <div className="border border-border rounded-sm">
               <div className="px-4 py-2 border-b border-border bg-secondary/30">
@@ -313,18 +341,21 @@ export function AdminPolicies() {
               </div>
               <div
                 className="p-6 prose prose-sm max-w-none prose-headings:font-serif prose-headings:font-semibold prose-headings:text-foreground prose-strong:text-foreground prose-a:text-foreground prose-a:underline prose-ul:list-disc prose-ul:pl-5"
-                dangerouslySetInnerHTML={{ __html: content }}
+                dangerouslySetInnerHTML={{ __html: form.content }}
               />
             </div>
           ) : (
             <div>
               <Label className="text-xs font-medium mb-2 block">Content (Rich Text)</Label>
-              <RichEditor value={content} onChange={setContent} />
+              <RichEditor value={form.content} onChange={(content) => setForm({ ...form, content })} />
             </div>
           )}
         </div>
+      ) : (
+        <div className="text-center py-12">
+          <p className="text-sm text-muted-foreground">No policies available. Create one to get started.</p>
+        </div>
       )}
     </div>
-    </AdminShell>
   )
 }
