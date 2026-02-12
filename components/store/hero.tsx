@@ -100,9 +100,68 @@ function AnkaraCarousel({ banner }: { banner: HeroBanner }) {
   )
 }
 
+function BannerImage({ src, alt, priority = false }: { src: string; alt: string; priority?: boolean }) {
+  const [imgSrc, setImgSrc] = useState(src)
+  const [hasError, setHasError] = useState(false)
+
+  useEffect(() => {
+    setImgSrc(src)
+    setHasError(false)
+  }, [src])
+
+  if (hasError) {
+    return (
+      <Image
+        src="/banners/hero-ankara-main.jpg"
+        alt={alt}
+        fill
+        className="object-cover"
+        priority={priority}
+      />
+    )
+  }
+
+  return (
+    <Image
+      src={imgSrc}
+      alt={alt}
+      fill
+      className="object-cover group-hover:scale-105 transition-transform duration-700"
+      priority={priority}
+      onError={() => {
+        setHasError(true)
+        setImgSrc("/banners/hero-ankara-main.jpg")
+      }}
+    />
+  )
+}
+
 export function Hero() {
   const { data: banners } = useSWR<HeroBanner[]>("/api/hero-banners", fetcher)
-  const items = banners && banners.length >= 3 ? banners : FALLBACK_BANNERS
+
+  // Merge DB banners with fallbacks - always guarantee 3 valid banners
+  const items: HeroBanner[] = (() => {
+    if (!banners || banners.length === 0) return FALLBACK_BANNERS
+
+    // Ensure each banner has a valid image, fallback to known images
+    const validImages = [
+      "/banners/hero-ankara-main.jpg",
+      "/banners/ankara-dresses-banner.jpg",
+      "/banners/ankara-new-arrivals-banner.jpg",
+    ]
+
+    return banners.slice(0, 3).map((b, i) => ({
+      ...b,
+      bannerImage: b.bannerImage && b.bannerImage.startsWith("/") ? b.bannerImage : validImages[i % validImages.length],
+      linkUrl: b.linkUrl || "/shop",
+      buttonText: b.buttonText || "Shop Now",
+    }))
+  })()
+
+  // Pad to 3 if needed
+  while (items.length < 3) {
+    items.push(FALLBACK_BANNERS[items.length])
+  }
 
   const mainBanner = items[0]
   const sideBanners = items.slice(1, 3)
@@ -111,43 +170,10 @@ export function Hero() {
     <section className="bg-secondary">
       <div className="mx-auto max-w-7xl px-4 py-6 lg:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-stretch">
-          {/* Main Banner - Ankara Suits with Carousel */}
-          {mainBanner.collection === "ankara-suits" ? (
-            <AnkaraCarousel banner={mainBanner} />
-          ) : (
-            <Link
-              href={mainBanner.linkUrl}
-              className="lg:col-span-8 relative overflow-hidden rounded-sm min-h-[400px] lg:min-h-[520px] flex items-end group"
-            >
-              <div className="absolute inset-0 z-0">
-                <Image
-                  src={mainBanner.bannerImage}
-                  alt={mainBanner.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-              </div>
-              <div className="relative z-10 p-8 lg:p-12 w-full">
-                <p className="text-white/80 text-xs tracking-[0.3em] uppercase mb-2">
-                  {mainBanner.collection === "ankara-suits" ? "African Fashion" : "Ankara Collection"}
-                </p>
-                <h1 className="text-white text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
-                  {mainBanner.title}
-                </h1>
-                <p className="text-white/70 text-sm mt-3 leading-relaxed max-w-md">
-                  {mainBanner.subtitle}
-                </p>
-                <span className="inline-flex items-center gap-2 mt-5 bg-white text-black px-7 py-3 text-sm font-medium hover:bg-white/90 transition-colors">
-                  {mainBanner.buttonText}
-                  <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              </div>
-            </Link>
-          )}
+          {/* Main Banner with Carousel */}
+          <AnkaraCarousel banner={mainBanner} />
 
-          {/* Side Banners - Ankara Dresses & Kimonos */}
+          {/* Side Banners */}
           <div className="lg:col-span-4 flex flex-col gap-4 lg:gap-6">
             {sideBanners.map((banner) => (
               <Link
@@ -155,11 +181,9 @@ export function Hero() {
                 href={banner.linkUrl}
                 className="relative overflow-hidden rounded-sm flex-1 min-h-[200px] lg:min-h-0 group flex items-end"
               >
-                <Image
+                <BannerImage
                   src={banner.bannerImage}
                   alt={banner.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                   priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />

@@ -195,18 +195,19 @@ export async function getPopupOffer(): Promise<Offer | null> {
     .from("popup_offers")
     .select("*")
     .eq("is_active", true)
+    .order("created_at", { ascending: false })
     .limit(1)
-    .single()
 
-  if (!data) return null
+  if (!data || data.length === 0) return null
 
+  const offer = data[0]
   return {
-    id: data.id,
-    title: data.title,
-    description: data.description || "",
-    discount: data.discount_percentage ? `${data.discount_percentage}% OFF` : "",
-    image: data.image_url || "",
-    validUntil: "2026-06-30",
+    id: offer.id,
+    title: offer.title,
+    description: offer.description || "",
+    discount: offer.discount_label || "",
+    image: offer.image_url || "/banners/ankara-dresses-banner.jpg",
+    validUntil: offer.valid_until || "2026-12-31",
   }
 }
 
@@ -250,12 +251,12 @@ export async function createOrder(order: {
   const supabase = await createClient()
 
   // Generate order number
-  const orderNumber = `KF-${Date.now().toString(36).toUpperCase()}`
+  const orderNumber = `CC-${Date.now().toString(36).toUpperCase()}`
 
   const { data: orderData, error: orderError } = await supabase
     .from("orders")
     .insert({
-      order_number: orderNumber,
+      order_no: orderNumber,
       customer_name: order.customerName,
       customer_email: order.customerEmail || null,
       customer_phone: order.customerPhone,
@@ -264,7 +265,7 @@ export async function createOrder(order: {
       delivery_fee: order.deliveryFee,
       subtotal: order.subtotal,
       total: order.total,
-      notes: order.notes || null,
+      order_notes: order.notes || null,
       ordered_via: order.orderedVia,
       payment_method: order.paymentMethod || "cod",
       mpesa_code: order.mpesaCode || null,
@@ -277,16 +278,14 @@ export async function createOrder(order: {
 
   if (orderError) throw orderError
 
-  // Insert order items
+  // Insert order items - match actual order_items schema
   const orderItems = order.items.map((item) => ({
     order_id: orderData.id,
-    product_id: item.productId,
+    product_id: item.productId || null,
     product_name: item.productName,
-    product_image: item.productImage || null,
-    variation: item.variation || null,
+    product_price: item.unitPrice,
     quantity: item.quantity,
-    unit_price: item.unitPrice,
-    total_price: item.totalPrice,
+    selected_variations: item.variation ? { type: item.variation } : null,
   }))
 
   const { error: itemsError } = await supabase
@@ -295,7 +294,7 @@ export async function createOrder(order: {
 
   if (itemsError) throw itemsError
 
-  return { orderNumber: orderData.order_number, orderId: orderData.id }
+  return { orderNumber: orderData.order_no, orderId: orderData.id }
 }
 
 export async function getHeroBanners(): Promise<HeroBanner[]> {
