@@ -24,16 +24,16 @@ function BabyshopNavLink() {
   return (
     <div className="relative group">
       <Link
-        href="/shop/babyshop"
-        className="text-sm font-medium neon-flicker text-pink-600 hover:text-pink-700 transition-colors relative"
+        href="/shop/ankara-suits"
+        className="text-sm font-medium text-primary hover:text-secondary transition-colors"
         onMouseEnter={() => setShowTooltip(true)}
         onMouseLeave={() => setShowTooltip(false)}
       >
-        Babyshop ✨
+        Premium Ankara
       </Link>
       {showTooltip && (
         <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 bg-foreground text-background px-3 py-2 rounded-sm text-xs whitespace-nowrap z-50 pointer-events-none">
-          Kali-ttos Little Wardrobe
+          Handcrafted Authentic African Fashion
           <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-foreground rotate-45" />
         </div>
       )}
@@ -119,7 +119,7 @@ export function Navbar() {
             <SheetContent side="left" className="w-80 bg-background text-foreground p-0">
               <div className="p-6">
                 <Link href="/" className="font-serif text-2xl font-bold tracking-tight">
-                  Kallitos Fashion
+                  Classy Collections
                 </Link>
               </div>
               <nav className="flex flex-col px-6 gap-1">
@@ -128,7 +128,6 @@ export function Navbar() {
                 <p className="pt-3 pb-1 text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Collections</p>
                 <Link href="/shop/men" className="py-2.5 text-sm border-b border-border pl-3">Men</Link>
                 <Link href="/shop/women" className="py-2.5 text-sm border-b border-border pl-3">Women</Link>
-                <Link href="/shop/babyshop" className="py-2.5 text-sm border-b border-border pl-3 text-pink-600 font-medium">Babyshop ✨</Link>
                 <p className="pt-3 pb-1 text-[10px] tracking-[0.2em] uppercase text-muted-foreground">Categories</p>
                 {categories.map((cat) => (
                   <Link key={cat.id} href={`/shop?category=${cat.slug}`} className="py-2.5 text-sm border-b border-border pl-3">{cat.name}</Link>
@@ -136,14 +135,14 @@ export function Navbar() {
                 <Link href="/track-order" className="py-3 text-sm font-medium border-b border-border">Track My Order</Link>
               </nav>
               <div className="px-6 py-4 mt-4 space-y-3">
-                <a href="https://www.instagram.com/kallittofashions/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">Instagram</a>
-                <a href="https://www.tiktok.com/@kallittos" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">TikTok</a>
-                <a href="tel:+254713809695" className="flex items-center gap-2 text-sm font-medium"><Phone className="h-4 w-4" />0713 809 695</a>
+                <a href="https://www.instagram.com/_classycollections/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">Instagram</a>
+                <a href="https://www.tiktok.com/@_classycollections" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">TikTok</a>
+                <a href="tel:+254702642324" className="flex items-center gap-2 text-sm font-medium"><Phone className="h-4 w-4" />0702 642 324</a>
               </div>
             </SheetContent>
           </Sheet>
 
-          <Link href="/" className="font-serif text-xl lg:text-2xl font-bold tracking-tight">Kallitos Fashion</Link>
+          <Link href="/" className="font-serif text-xl lg:text-2xl font-bold tracking-tight">Classy Collections</Link>
 
           <div className="hidden lg:flex items-center flex-1 max-w-xl mx-8" ref={searchRef}>
             <form onSubmit={handleSearch} className="relative flex items-center w-full">

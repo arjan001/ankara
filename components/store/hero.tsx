@@ -9,50 +9,50 @@ import useSWR from "swr"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
-const BABYSHOP_CAROUSEL_IMAGES = [
-  "/banners/babyshop-collection.jpg",
-  "/banners/babyshop-carousel-2.jpg",
-  "/banners/babyshop-carousel-3.jpg",
+const ANKARA_CAROUSEL_IMAGES = [
+  "/banners/women-collection.jpg",
+  "/banners/women-page-banner.jpg",
+  "/banners/men-collection.jpg",
 ]
 
 const FALLBACK_BANNERS: HeroBanner[] = [
   {
-    id: "babyshop",
-    title: "Kali-ttos Little Wardrobe",
-    subtitle: "Everything your little one needs -- from rompers & onesies to tiny shoes & accessories. Ages 0-1, 1-3 & 4-6.",
-    collection: "babyshop",
-    bannerImage: "/banners/babyshop-collection.jpg",
-    linkUrl: "/shop/babyshop",
-    buttonText: "Shop Babyshop",
+    id: "ankara-suits",
+    title: "Ankara Suits Collection",
+    subtitle: "Premium ready-made Ankara suits. Perfect for weddings, events, and celebrations. Handcrafted excellence.",
+    collection: "ankara-suits",
+    bannerImage: "/banners/men-collection.jpg",
+    linkUrl: "/shop/ankara-suits",
+    buttonText: "Explore Suits",
     sortOrder: 0,
   },
   {
-    id: "men",
-    title: "Men's Collection",
-    subtitle: "Rugged denim for the modern man. Slim fits to relaxed cuts.",
-    collection: "men",
-    bannerImage: "/banners/men-collection.jpg",
-    linkUrl: "/shop/men",
-    buttonText: "Shop Men",
+    id: "ankara-dresses",
+    title: "Ankara Dresses",
+    subtitle: "Stunning Ankara dresses for every occasion. From casual to formal, find your perfect style.",
+    collection: "ankara-dresses",
+    bannerImage: "/banners/women-collection.jpg",
+    linkUrl: "/shop/ankara-dresses",
+    buttonText: "Shop Dresses",
     sortOrder: 1,
   },
   {
-    id: "women",
-    title: "Women's Collection",
-    subtitle: "Curated denim for every woman. Thrift finds & brand-new pieces.",
-    collection: "women",
-    bannerImage: "/banners/women-collection.jpg",
-    linkUrl: "/shop/women",
-    buttonText: "Shop Women",
+    id: "ankara-kimonos",
+    title: "Ankara Kimonos",
+    subtitle: "Trendy Ankara kimonos with matching accessories. Versatile pieces for modern African style.",
+    collection: "ankara-kimonos",
+    bannerImage: "/banners/kids-collection.jpg",
+    linkUrl: "/shop/ankara-kimonos",
+    buttonText: "View Kimonos",
     sortOrder: 2,
   },
 ]
 
-function BabyshopCarousel({ banner }: { banner: HeroBanner }) {
+function AnkaraCarousel({ banner }: { banner: HeroBanner }) {
   const [currentSlide, setCurrentSlide] = useState(0)
 
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % BABYSHOP_CAROUSEL_IMAGES.length)
+    setCurrentSlide((prev) => (prev + 1) % ANKARA_CAROUSEL_IMAGES.length)
   }, [])
 
   useEffect(() => {
@@ -66,7 +66,59 @@ function BabyshopCarousel({ banner }: { banner: HeroBanner }) {
       className="lg:col-span-8 relative overflow-hidden rounded-sm min-h-[400px] lg:min-h-[520px] flex items-end group"
     >
       <div className="absolute inset-0 z-0">
-        {BABYSHOP_CAROUSEL_IMAGES.map((src, i) => (
+        {ANKARA_CAROUSEL_IMAGES.map((src, i) => (
+          <div
+            key={src}
+            className="absolute inset-0 transition-opacity duration-700"
+            style={{ opacity: i === currentSlide ? 1 : 0 }}
+          >
+            <Image
+              src={src}
+              alt={`${banner.title} - carousel slide ${i + 1}`}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-700"
+              priority={i === 0}
+            />
+          </div>
+        ))}
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
+      </div>
+      <div className="relative z-10 p-8 lg:p-12 w-full">
+        <p className="text-background/80 text-xs tracking-[0.3em] uppercase mb-2">African Fashion</p>
+        <h1 className="text-background text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
+          {banner.title}
+        </h1>
+        <p className="text-background/70 text-sm mt-3 leading-relaxed max-w-md">
+          {banner.subtitle}
+        </p>
+        <span className="inline-flex items-center gap-2 mt-5 bg-primary hover:bg-primary/90 text-primary-foreground px-7 py-3 text-sm font-medium transition-colors">
+          {banner.buttonText}
+          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+        </span>
+      </div>
+    </Link>
+  )
+}
+
+function BabyshopCarousel({ banner }: { banner: HeroBanner }) {
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % ANKARA_CAROUSEL_IMAGES.length)
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(nextSlide, 4000)
+    return () => clearInterval(interval)
+  }, [nextSlide])
+
+  return (
+    <Link
+      href={banner.linkUrl}
+      className="lg:col-span-8 relative overflow-hidden rounded-sm min-h-[400px] lg:min-h-[520px] flex items-end group"
+    >
+      <div className="absolute inset-0 z-0">
+        {ANKARA_CAROUSEL_IMAGES.map((src, i) => (
           <div
             key={src}
             className="absolute inset-0 transition-opacity duration-700"
@@ -111,9 +163,9 @@ export function Hero() {
     <section className="bg-secondary">
       <div className="mx-auto max-w-7xl px-4 py-6 lg:py-0">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-stretch">
-          {/* Main Banner - Babyshop with Carousel */}
-          {mainBanner.collection === "babyshop" ? (
-            <BabyshopCarousel banner={mainBanner} />
+          {/* Main Banner - Ankara Suits with Carousel */}
+          {mainBanner.collection === "ankara-suits" ? (
+            <AnkaraCarousel banner={mainBanner} />
           ) : (
             <Link
               href={mainBanner.linkUrl}
@@ -131,7 +183,7 @@ export function Hero() {
               </div>
               <div className="relative z-10 p-8 lg:p-12 w-full">
                 <p className="text-background/80 text-xs tracking-[0.3em] uppercase mb-2">
-                  {mainBanner.collection === "babyshop" ? "Baby Essentials" : "Curated Denim"}
+                  {mainBanner.collection === "ankara-suits" ? "African Fashion" : "Ankara Collection"}
                 </p>
                 <h1 className="text-background text-4xl lg:text-5xl font-serif font-bold leading-tight text-balance">
                   {mainBanner.title}
@@ -139,7 +191,7 @@ export function Hero() {
                 <p className="text-background/70 text-sm mt-3 leading-relaxed max-w-md">
                   {mainBanner.subtitle}
                 </p>
-                <span className="inline-flex items-center gap-2 mt-5 bg-background text-foreground px-7 py-3 text-sm font-medium group-hover:bg-background/90 transition-colors">
+                <span className="inline-flex items-center gap-2 mt-5 bg-primary hover:bg-primary/90 text-primary-foreground px-7 py-3 text-sm font-medium transition-colors">
                   {mainBanner.buttonText}
                   <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </span>
@@ -147,7 +199,7 @@ export function Hero() {
             </Link>
           )}
 
-          {/* Side Banners - Men & Women */}
+          {/* Side Banners - Ankara Dresses & Kimonos */}
           <div className="lg:col-span-4 flex flex-col gap-4 lg:gap-6">
             {sideBanners.map((banner) => (
               <Link
