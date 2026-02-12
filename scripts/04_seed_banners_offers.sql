@@ -3,9 +3,9 @@
 -- Insert hero banners (if they don't exist)
 INSERT INTO hero_banners (title, subtitle, image_url, button_link, button_text, is_active, sort_order, created_at)
 VALUES
-  ('Premium Ankara Suits', 'Elegant collection of handcrafted Ankara suits perfect for any occasion', '/images/hero-men.jpg', '/shop/men', 'Shop Mens Collection', true, 1, now()),
-  ('Stunning Ankara Dresses', 'Discover vibrant Ankara dresses that celebrate African beauty', '/images/hero-women.jpg', '/shop/women', 'Shop Womens Collection', true, 2, now()),
-  ('Ankara Kimonos & Sets', 'Versatile and trendy Ankara kimonos that complement any style', '/images/hero-kimonos.jpg', '/shop/women', 'Explore Kimonos', true, 3, now())
+  ('Premium Ankara Dresses Collection', 'Discover vibrant, ready-made Ankara dresses perfect for any occasion. From casual to formal wear.', '/banners/ankara-dresses-banner.jpg', '/shop?category=women-ankara-dresses', 'Shop Dresses', true, 1, now()),
+  ('Ankara Party & Event Wear', 'Stunning Ankara dresses for weddings, events, and celebrations. Premium African prints with expert craftsmanship.', '/banners/ankara-new-arrivals-banner.jpg', '/shop?filter=party', 'Explore Party Wear', true, 2, now()),
+  ('New Ankara Arrivals', 'Fresh styles added weekly. Kimonos, fitted dresses, and statement pieces for the modern African woman.', '/banners/hero-ankara-main.jpg', '/shop?filter=new', 'View New In', true, 3, now())
 ON CONFLICT DO NOTHING;
 
 -- Insert navbar offers (announcement bar)
@@ -20,10 +20,10 @@ ON CONFLICT DO NOTHING;
 -- Insert popup offers
 INSERT INTO popup_offers (title, description, discount_label, image_url, is_active, created_at)
 VALUES
-  ('Welcome to Classy Collections', 'Get 15% off your first order with code WELCOME15', '15% OFF', '/images/popup-welcome.jpg', true, now()),
-  ('Flash Sale', 'Limited time: 25% off on all Ankara suits today only', '25% OFF', '/images/popup-flash.jpg', false, now()),
-  ('Join Our Newsletter', 'Subscribe to get exclusive offers and new arrivals first', 'SUBSCRIBE', '/images/popup-newsletter.jpg', true, now()),
-  ('Easter Special', 'Celebrate with 20% off on selected dresses and kimonos', '20% OFF', '/images/popup-easter.jpg', false, now())
+  ('Welcome to Classy Collections', 'Get 15% off your first order with code WELCOME15', '15% OFF', '/banners/ankara-dresses-banner.jpg', true, now()),
+  ('Flash Sale', 'Limited time: 25% off on all Ankara suits today only', '25% OFF', '/banners/ankara-new-arrivals-banner.jpg', false, now()),
+  ('Join Our Newsletter', 'Subscribe to get exclusive offers and new arrivals first', 'SUBSCRIBE', '/banners/hero-ankara-main.jpg', true, now()),
+  ('Easter Special', 'Celebrate with 20% off on selected dresses and kimonos', '20% OFF', '/banners/hero-ankara-main.jpg', false, now())
 ON CONFLICT DO NOTHING;
 
 -- Confirm data
