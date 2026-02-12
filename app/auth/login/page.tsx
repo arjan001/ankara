@@ -51,7 +51,7 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="font-serif text-3xl font-bold tracking-tight">
-            Kallitos Fashion
+            Classy Collections
           </Link>
           <p className="text-sm text-muted-foreground mt-2">Sign in to admin dashboard</p>
         </div>
@@ -116,7 +116,18 @@ export default function LoginPage() {
           </Button>
         </form>
 
-        <div className="mt-8 text-center">
+        <div className="mt-8 pt-8 border-t border-border">
+          <p className="text-xs text-muted-foreground text-center mb-4">
+            New admin user? Create an account first.
+          </p>
+          <Link href="/auth/register">
+            <Button variant="outline" className="w-full h-11">
+              Create Admin Account
+            </Button>
+          </Link>
+        </div>
+
+        <div className="mt-6 text-center">
           <Link href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
             Back to store
           </Link>

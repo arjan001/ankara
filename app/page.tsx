@@ -2,10 +2,11 @@ import { LandingPage } from "@/components/store/landing-page"
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Ankara Fashion | Premium African Print Clothing - Suits, Dresses, Kimonos in Kenya",
+  title: "Classy Collections | Premium African Ankara Print Clothing - Suits, Dresses, Kimonos",
   description:
-    "Shop authentic Ankara fashion at Ankara Fashion. Premium ready-made Ankara suits, dresses, kimonos, palazzo, shirts, and tops. Celebrate African style with quality fabrics. Delivered across Kenya and East Africa.",
+    "Shop authentic Ankara fashion at Classy Collections. Premium ready-made Ankara suits, dresses, kimonos, palazzo, shirts, and tops for men and women. Celebrate African style with quality fabrics. Delivered across Kenya and East Africa.",
   keywords: [
+    "classy collections",
     "ankara fashion",
     "ankara clothing Kenya",
     "african print fashion",
@@ -19,22 +20,22 @@ export const metadata: Metadata = {
     "east african fashion",
     "online shopping Kenya",
   ],
-  alternates: { canonical: "https://ankarafashion.com" },
+  alternates: { canonical: "https://classycollections.com" },
   openGraph: {
-    title: "Ankara Fashion | Premium African Print Clothing in Kenya",
+    title: "Classy Collections | Premium African Ankara Print Clothing",
     description: "Shop authentic Ankara fashion - suits, dresses, kimonos, and more. Premium African style delivered across Kenya and East Africa.",
-    url: "https://ankarafashion.com",
+    url: "https://classycollections.com",
     type: "website",
-    siteName: "Ankara Fashion",
+    siteName: "Classy Collections",
     locale: "en_KE",
-    images: [{ url: "https://ankarafashion.com/logo.png", width: 512, height: 512, alt: "Ankara Fashion Logo" }],
+    images: [{ url: "https://classycollections.com/logo.png", width: 512, height: 512, alt: "Classy Collections Logo" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ankara Fashion | Premium African Print Clothing",
+    title: "Classy Collections | Premium African Ankara Fashion",
     description: "Authentic Ankara suits, dresses, kimonos, and more. Celebrate African style.",
-    images: ["https://ankarafashion.com/logo.png"],
-    creator: "@ankarafashion",
+    images: ["https://classycollections.com/logo.png"],
+    creator: "@classycollections",
   },
 }
 
@@ -47,24 +48,20 @@ export default function Page() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            name: "Kallittos Fashions",
+            name: "Classy Collections",
             description: "Curated thrift & brand-new denim online store in Kenya",
             url: "https://kallittofashions.com",
             mainEntity: {
               "@type": "LocalBusiness",
-              name: "Ankara Fashion",
+              name: "Classy Collections",
               description: "Premium authentic Ankara fashion, suits, dresses, kimonos & more in Kenya",
-              image: "https://ankarafashion.com/logo.png",
+              image: "https://classycollections.com/logo.png",
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Nairobi CBD",
-                addressLocality: "Nairobi",
-                addressRegion: "Nairobi",
-                postalCode: "00100",
                 addressCountry: "KE",
               },
-              telephone: "+254 0700 000 000",
-              url: "https://ankarafashion.com",
+              telephone: "+254 702 642 324",
+              url: "https://classycollections.com",
             },
           }),
         }}
