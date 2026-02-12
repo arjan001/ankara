@@ -1,7 +1,11 @@
 import { createClient } from "@/lib/supabase/server"
 import { NextResponse, type NextRequest } from "next/server"
+import { requireAuth } from "@/lib/security"
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  const auth = await requireAuth()
+  if (!auth.authenticated) return auth.response!
+  
   const supabase = await createClient()
   const { data } = await supabase
     .from("hero_banners")
@@ -11,6 +15,9 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const auth = await requireAuth()
+  if (!auth.authenticated) return auth.response!
+  
   const supabase = await createClient()
   const body = await req.json()
 
@@ -30,6 +37,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
+  const auth = await requireAuth()
+  if (!auth.authenticated) return auth.response!
+  
   const supabase = await createClient()
   const body = await req.json()
 
@@ -53,6 +63,9 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
+  const auth = await requireAuth()
+  if (!auth.authenticated) return auth.response!
+  
   const supabase = await createClient()
   const { searchParams } = new URL(req.url)
   const id = searchParams.get("id")
@@ -63,3 +76,4 @@ export async function DELETE(req: NextRequest) {
   if (error) return NextResponse.json({ error: error.message }, { status: 400 })
   return NextResponse.json({ success: true })
 }
+

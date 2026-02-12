@@ -67,14 +67,28 @@ export function AdminBanners() {
   const openHeroNew = () => { setEditHero(null); setHeroForm({ title: "", subtitle: "", collection: "men", bannerImage: "", linkUrl: "/shop/men", buttonText: "Shop Now" }); setHeroModal(true) }
   const openHeroEdit = (h: HeroBannerData) => { setEditHero(h); setHeroForm({ title: h.title, subtitle: h.subtitle || "", collection: h.collection, bannerImage: h.banner_image || "", linkUrl: h.link_url, buttonText: h.button_text || "Shop Now" }); setHeroModal(true) }
   const saveHero = async () => {
-    await fetch("/api/admin/hero-banners", {
-      method: editHero ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: editHero?.id, ...heroForm, isActive: editHero?.is_active ?? true, sortOrder: editHero?.sort_order ?? heroBanners.length }),
-    })
-    mutateHero(); setHeroModal(false)
+    try {
+      const response = await fetch("/api/admin/hero-banners", {
+        method: editHero ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: editHero?.id, ...heroForm, isActive: editHero?.is_active ?? true, sortOrder: editHero?.sort_order ?? heroBanners.length }),
+      })
+      if (!response.ok) throw new Error("Failed to save hero banner")
+      await mutateHero()
+      setHeroModal(false)
+    } catch (error) {
+      alert(`Error saving hero banner: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
   }
-  const deleteHero = async (id: string) => { await fetch(`/api/admin/hero-banners?id=${id}`, { method: "DELETE" }); mutateHero() }
+  const deleteHero = async (id: string) => {
+    try {
+      const response = await fetch(`/api/admin/hero-banners?id=${id}`, { method: "DELETE" })
+      if (!response.ok) throw new Error("Failed to delete hero banner")
+      await mutateHero()
+    } catch (error) {
+      alert(`Error deleting hero banner: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
+  }
   const toggleHero = async (h: HeroBannerData) => {
     await fetch("/api/admin/hero-banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: h.id, title: h.title, subtitle: h.subtitle, collection: h.collection, bannerImage: h.banner_image, linkUrl: h.link_url, buttonText: h.button_text, isActive: !h.is_active, sortOrder: h.sort_order }) })
     mutateHero()
@@ -99,40 +113,101 @@ export function AdminBanners() {
   const openBannerNew = () => { setEditBanner(null); setBannerForm({ title: "", subtitle: "", image: "", link: "", position: "hero" }); setBannerModal(true) }
   const openBannerEdit = (b: BannerData) => { setEditBanner(b); setBannerForm({ title: b.title, subtitle: b.subtitle || "", image: b.image_url || "", link: b.link_url, position: b.position }); setBannerModal(true) }
   const saveBanner = async () => {
-    await fetch("/api/admin/banners", {
-      method: editBanner ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ type: "banner", id: editBanner?.id, title: bannerForm.title, subtitle: bannerForm.subtitle, image: bannerForm.image, link: bannerForm.link, position: bannerForm.position, isActive: editBanner?.is_active ?? true }),
-    })
-    mutate(); setBannerModal(false)
+    try {
+      const response = await fetch("/api/admin/banners", {
+        method: editBanner ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type: "banner", id: editBanner?.id, title: bannerForm.title, subtitle: bannerForm.subtitle, image: bannerForm.image, link: bannerForm.link, position: bannerForm.position, isActive: editBanner?.is_active ?? true }),
+      })
+      if (!response.ok) throw new Error("Failed to save banner")
+      await mutate()
+      setBannerModal(false)
+    } catch (error) {
+      alert(`Error saving banner: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
   }
-  const deleteBanner = async (id: string) => { await fetch(`/api/admin/banners?id=${id}&type=banner`, { method: "DELETE" }); mutate() }
+  const deleteBanner = async (id: string) => {
+    try {
+      const response = await fetch(`/api/admin/banners?id=${id}&type=banner`, { method: "DELETE" })
+      if (!response.ok) throw new Error("Failed to delete banner")
+      await mutate()
+    } catch (error) {
+      alert(`Error deleting banner: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
+  }
   const toggleBanner = async (b: BannerData) => {
-    await fetch("/api/admin/banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "banner", id: b.id, title: b.title, subtitle: b.subtitle, image: b.image_url, link: b.link_url, position: b.position, isActive: !b.is_active }) })
-    mutate()
+    try {
+      const response = await fetch("/api/admin/banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "banner", id: b.id, title: b.title, subtitle: b.subtitle, image: b.image_url, link: b.link_url, position: b.position, isActive: !b.is_active }) })
+      if (!response.ok) throw new Error("Failed to toggle banner")
+      await mutate()
+    } catch (error) {
+      alert(`Error toggling banner: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
   }
 
   // Nav CRUD
   const openNavNew = () => { setEditNav(null); setNavText(""); setNavModal(true) }
   const openNavEdit = (n: NavOfferData) => { setEditNav(n); setNavText(n.text); setNavModal(true) }
   const saveNav = async () => {
-    await fetch("/api/admin/banners", { method: editNav ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "navbar_offer", id: editNav?.id, text: navText, isActive: editNav?.is_active ?? true }) })
-    mutate(); setNavModal(false)
+    try {
+      const response = await fetch("/api/admin/banners", { method: editNav ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "navbar_offer", id: editNav?.id, text: navText, isActive: editNav?.is_active ?? true }) })
+      if (!response.ok) throw new Error("Failed to save navbar offer")
+      await mutate()
+      setNavModal(false)
+    } catch (error) {
+      alert(`Error saving navbar offer: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
   }
-  const deleteNav = async (id: string) => { await fetch(`/api/admin/banners?id=${id}&type=navbar_offer`, { method: "DELETE" }); mutate() }
+  const deleteNav = async (id: string) => {
+    try {
+      const response = await fetch(`/api/admin/banners?id=${id}&type=navbar_offer`, { method: "DELETE" })
+      if (!response.ok) throw new Error("Failed to delete navbar offer")
+      await mutate()
+    } catch (error) {
+      alert(`Error deleting navbar offer: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
+  }
   const toggleNav = async (n: NavOfferData) => {
-    await fetch("/api/admin/banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "navbar_offer", id: n.id, text: n.text, isActive: !n.is_active }) })
-    mutate()
+    try {
+      const response = await fetch("/api/admin/banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "navbar_offer", id: n.id, text: n.text, isActive: !n.is_active }) })
+      if (!response.ok) throw new Error("Failed to toggle navbar offer")
+      await mutate()
+    } catch (error) {
+      alert(`Error toggling navbar offer: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
   }
 
   // Popup CRUD
   const openPopupNew = () => { setEditPopup(null); setPopupForm({ title: "", description: "", discountPercentage: "", image: "" }); setPopupModal(true) }
   const openPopupEdit = (p: PopupData) => { setEditPopup(p); setPopupForm({ title: p.title, description: p.description || "", discountPercentage: p.discount_percentage?.toString() || "", image: p.image_url || "" }); setPopupModal(true) }
   const savePopup = async () => {
-    await fetch("/api/admin/banners", { method: editPopup ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "popup_offer", id: editPopup?.id, title: popupForm.title, description: popupForm.description, discountPercentage: popupForm.discountPercentage ? Number(popupForm.discountPercentage) : null, image: popupForm.image, isActive: editPopup?.is_active ?? true }) })
-    mutate(); setPopupModal(false)
+    try {
+      const response = await fetch("/api/admin/banners", { method: editPopup ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "popup_offer", id: editPopup?.id, title: popupForm.title, description: popupForm.description, discountPercentage: popupForm.discountPercentage ? Number(popupForm.discountPercentage) : null, image: popupForm.image, isActive: editPopup?.is_active ?? true }) })
+      if (!response.ok) throw new Error("Failed to save popup offer")
+      await mutate()
+      setPopupModal(false)
+    } catch (error) {
+      alert(`Error saving popup offer: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
   }
-  const deletePopup = async (id: string) => { await fetch(`/api/admin/banners?id=${id}&type=popup_offer`, { method: "DELETE" }); mutate() }
+  const deletePopup = async (id: string) => {
+    try {
+      const response = await fetch(`/api/admin/banners?id=${id}&type=popup_offer`, { method: "DELETE" })
+      if (!response.ok) throw new Error("Failed to delete popup offer")
+      await mutate()
+    } catch (error) {
+      alert(`Error deleting popup offer: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
+  }
+  const togglePopup = async (p: PopupData) => {
+    try {
+      const response = await fetch("/api/admin/banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "popup_offer", id: p.id, title: p.title, description: p.description, discountPercentage: p.discount_percentage, image: p.image_url, isActive: !p.is_active }) })
+      if (!response.ok) throw new Error("Failed to toggle popup offer")
+      await mutate()
+    } catch (error) {
+      alert(`Error toggling popup offer: ${error instanceof Error ? error.message : "Unknown error"}`)
+    }
+  }
 
   return (
     <AdminShell title="Offers & Banners">
@@ -178,6 +253,7 @@ export function AdminBanners() {
             <div className="flex justify-end">
               <Button onClick={openBannerNew} className="bg-foreground text-background hover:bg-foreground/90"><Plus className="h-4 w-4 mr-2" /> Add Banner</Button>
             </div>
+            {banners.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No banners yet. Add your first banner above.</p>}
             {banners.map((b) => (
               <div key={b.id} className="flex items-center gap-4 border border-border rounded-sm p-4">
                 <div className="relative w-32 h-20 bg-secondary rounded-sm overflow-hidden flex-shrink-0">
@@ -201,6 +277,7 @@ export function AdminBanners() {
             <div className="flex justify-end">
               <Button onClick={openNavNew} className="bg-foreground text-background hover:bg-foreground/90"><Plus className="h-4 w-4 mr-2" /> Add Offer Text</Button>
             </div>
+            {navOffers.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No navbar offers yet. Add your first offer above.</p>}
             {navOffers.map((n) => (
               <div key={n.id} className="flex items-center gap-4 border border-border rounded-sm p-4">
                 <Megaphone className="h-5 w-5 text-muted-foreground flex-shrink-0" />
@@ -218,6 +295,7 @@ export function AdminBanners() {
             <div className="flex justify-end">
               <Button onClick={openPopupNew} className="bg-foreground text-background hover:bg-foreground/90"><Plus className="h-4 w-4 mr-2" /> Add Popup Offer</Button>
             </div>
+            {popupOffers.length === 0 && <p className="text-sm text-muted-foreground text-center py-8">No popup offers yet. Add your first offer above.</p>}
             {popupOffers.map((p) => (
               <div key={p.id} className="flex items-center gap-4 border border-border rounded-sm p-4">
                 <div className="relative w-20 h-14 bg-secondary rounded-sm overflow-hidden flex-shrink-0">
@@ -227,7 +305,8 @@ export function AdminBanners() {
                   <h3 className="text-sm font-semibold">{p.title}</h3>
                   <p className="text-xs text-muted-foreground">{p.discount_percentage ? `${p.discount_percentage}% OFF` : "No discount set"}</p>
                 </div>
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-2">
+                  <Switch checked={p.is_active} onCheckedChange={() => togglePopup(p)} />
                   <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openPopupEdit(p)}><Pencil className="h-3.5 w-3.5" /></Button>
                   <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deletePopup(p.id)}><Trash2 className="h-3.5 w-3.5" /></Button>
                 </div>
