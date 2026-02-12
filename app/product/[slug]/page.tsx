@@ -11,15 +11,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   try {
     const product = await getProductBySlug(slug)
     if (!product) return { title: "Product Not Found | Classy Collections" }
-    const desc = product.description.slice(0, 155) + (product.description.length > 155 ? "..." : "")
+    const desc = product.description.slice(0, 130) + (product.description.length > 130 ? "..." : "")
     return {
-      title: `${product.name} | Classy Collections`,
-      description: `${desc} Premium ready-made Ankara wear. Order now at Classy Collections for authentic African fashion delivered across Kenya.`,
+      title: `${product.name} | Premium Ankara Fashion at Classy Collections`,
+      description: `${desc} Shop authentic ready-made Ankara fashion at Classy Collections Nairobi. Premium African prints suits, dresses, kimonos & more. Fast delivery Kenya. Call 0702642324.`,
       keywords: [
-        product.name, "Classy Collections", "ankara fashion Kenya", "authentic ankara", "african print",
-        "buy ankara online Kenya", product.category || "", "ankara dresses", "ankara suits",
-        "premium African wear", "ready-made Ankara", "African print fashion Kenya",
-        product.tags?.join(", ") || "", "Classy Collections Nairobi",
+        product.name, "buy Ankara online Kenya", "Classy Collections", "authentic Ankara", "african print fashion Kenya",
+        "ready-made Ankara wear", "premium African fashion", "Ankara dresses", "Ankara suits", "Nairobi fashion",
+        product.category || "", product.tags?.join(", ") || "", "order Ankara online",
       ],
       alternates: {
         canonical: `${SITE_URL}/product/${slug}`,
@@ -27,18 +26,18 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       authors: [{ name: "Classy Collections", url: SITE_URL }],
       creator: "Classy Collections",
       openGraph: {
-        title: `${product.name} | Classy Collections`,
-        description: `${desc} Premium African Ankara Fashion.`,
+        title: `${product.name} | Classy Collections Premium Ankara Fashion`,
+        description: `${desc} Premium authentic Ankara fashion. Ready-made suits, dresses, kimonos & more. Order now at Classy Collections Kenya.`,
         url: `${SITE_URL}/product/${slug}`,
-        images: product.images[0] ? [{ url: product.images[0], width: 600, height: 800, alt: `${product.name} - Classy Collections` }] : [],
+        images: product.images[0] ? [{ url: product.images[0], width: 600, height: 800, alt: `${product.name} - Classy Collections Premium Ankara Fashion` }] : [],
         type: "website",
         siteName: "Classy Collections",
         locale: "en_KE",
       },
       twitter: {
         card: "summary_large_image",
-        title: `${product.name} | Classy Collections`,
-        description: desc,
+        title: `${product.name} | Classy Collections Nairobi`,
+        description: `${desc} Shop premium Ankara fashion at Classy Collections Kenya.`,
         images: product.images[0] ? [product.images[0]] : [],
         creator: "@_classycollections",
       },
@@ -63,7 +62,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         description: product.description,
         url: `${SITE_URL}/product/${slug}`,
         image: product.images,
-        brand: { "@type": "Brand", name: "Classy Collections" },
+        brand: { "@type": "Brand", name: "Classy Collections - Premium Authentic Ankara Fashion Kenya" },
         offers: {
           "@type": "Offer",
           price: product.price,
@@ -75,6 +74,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             "@type": "Organization",
             name: "Classy Collections",
             url: SITE_URL,
+            telephone: "+254702642324",
+            contactType: "Customer Service",
           },
           itemCondition: product.condition === "thrift"
             ? "https://schema.org/UsedCondition"
