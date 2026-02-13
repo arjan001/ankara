@@ -47,7 +47,10 @@ interface PopupData {
   title: string
   description: string | null
   discount_percentage: number | null
+  discount_label: string | null
   image_url: string | null
+  link: string
+  valid_until: string | null
   is_active: boolean
 }
 
@@ -106,7 +109,7 @@ export function AdminBanners() {
   // Popup offer modal
   const [popupModal, setPopupModal] = useState(false)
   const [editPopup, setEditPopup] = useState<PopupData | null>(null)
-  const [popupForm, setPopupForm] = useState({ title: "", description: "", discountPercentage: "", image: "" })
+  const [popupForm, setPopupForm] = useState({ title: "", description: "", discountPercentage: "", discountLabel: "", image: "", link: "/shop", validUntil: "" })
 
   // Banner CRUD
   const openBannerNew = () => { setEditBanner(null); setBannerForm({ title: "", subtitle: "", image: "", link: "", position: "hero" }); setBannerModal(true) }
@@ -177,11 +180,11 @@ export function AdminBanners() {
   }
 
   // Popup CRUD
-  const openPopupNew = () => { setEditPopup(null); setPopupForm({ title: "", description: "", discountPercentage: "", image: "" }); setPopupModal(true) }
-  const openPopupEdit = (p: PopupData) => { setEditPopup(p); setPopupForm({ title: p.title, description: p.description || "", discountPercentage: p.discount_percentage?.toString() || "", image: p.image_url || "" }); setPopupModal(true) }
+  const openPopupNew = () => { setEditPopup(null); setPopupForm({ title: "", description: "", discountPercentage: "", discountLabel: "", image: "", link: "/shop", validUntil: "" }); setPopupModal(true) }
+  const openPopupEdit = (p: PopupData) => { setEditPopup(p); setPopupForm({ title: p.title, description: p.description || "", discountPercentage: p.discount_percentage?.toString() || "", discountLabel: p.discount_label || "", image: p.image_url || "", link: p.link || "/shop", validUntil: p.valid_until || "" }); setPopupModal(true) }
   const savePopup = async () => {
     try {
-      const response = await fetch("/api/admin/banners", { method: editPopup ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "popup_offer", id: editPopup?.id, title: popupForm.title, description: popupForm.description, discountPercentage: popupForm.discountPercentage ? Number(popupForm.discountPercentage) : null, image: popupForm.image, isActive: editPopup?.is_active ?? true }) })
+      const response = await fetch("/api/admin/banners", { method: editPopup ? "PUT" : "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "popup_offer", id: editPopup?.id, title: popupForm.title, description: popupForm.description, discountPercentage: popupForm.discountPercentage ? Number(popupForm.discountPercentage) : null, discountLabel: popupForm.discountLabel, image: popupForm.image, link: popupForm.link, validUntil: popupForm.validUntil, isActive: editPopup?.is_active ?? true }) })
       if (!response.ok) throw new Error("Failed to save popup offer")
       await mutate()
       setPopupModal(false)
@@ -200,7 +203,7 @@ export function AdminBanners() {
   }
   const togglePopup = async (p: PopupData) => {
     try {
-      const response = await fetch("/api/admin/banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "popup_offer", id: p.id, title: p.title, description: p.description, discountPercentage: p.discount_percentage, image: p.image_url, isActive: !p.is_active }) })
+      const response = await fetch("/api/admin/banners", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "popup_offer", id: p.id, title: p.title, description: p.description, discountPercentage: p.discount_percentage, discountLabel: p.discount_label, image: p.image_url, link: p.link, validUntil: p.valid_until, isActive: !p.is_active }) })
       if (!response.ok) throw new Error("Failed to toggle popup offer")
       await mutate()
     } catch (error) {
