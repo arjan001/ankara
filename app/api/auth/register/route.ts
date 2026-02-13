@@ -7,13 +7,8 @@ export async function POST(request: NextRequest) {
   const { email, displayName, role, password } = body
 
   // Validate inputs
-  if (!email || !displayName || !role || !password) {
+  if (!email || !displayName || !password) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 })
-  }
-
-  // Only allow admin and super_admin registration
-  if (!["admin", "super_admin"].includes(role)) {
-    return NextResponse.json({ error: "Invalid role" }, { status: 400 })
   }
 
   // Hash the password with bcrypt
@@ -32,13 +27,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "User already exists" }, { status: 400 })
   }
 
+  // Check if this is the first user (admin_users table is empty)
+  const { count: userCount } = await supabase
+    .from("admin_users")
+    .select("id", { count: "exact", head: true })
+
+  // First user always gets super_admin role with full access
+  const assignedRole = userCount === 0 ? "super_admin" : (role || "editor")
+
+  // Only allow admin, editor, or super_admin when specifying a role
+  if (role && !["admin", "super_admin", "editor"].includes(role)) {
+    return NextResponse.json({ error: "Invalid role" }, { status: 400 })
+  }
+
   // Insert into admin_users with password hash
   const { data, error } = await supabase
     .from("admin_users")
     .insert({
       email,
       name: displayName,
-      role,
+      role: assignedRole,
       password_hash: passwordHash,
     })
     .select("id, email, name, role")
@@ -49,6 +57,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ success: true, user: data })
+  return NextResponse.json({ success: true, user: data, isFirstUser: userCount === 0 })
 }
 

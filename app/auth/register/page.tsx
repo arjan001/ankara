@@ -113,7 +113,7 @@ export default function RegisterPage() {
           </div>
           <h1 className="text-2xl font-serif font-bold">Registration Closed</h1>
           <p className="text-sm text-muted-foreground mt-3 leading-relaxed">
-            The admin account has already been set up. New team members can only be added by any admin through the admin dashboard.
+            Admin setup is complete. New team members can only be added through the admin dashboard by existing admins.
           </p>
           <div className="mt-6 flex flex-col gap-3">
             <Link href="/auth/login">
@@ -176,22 +176,28 @@ export default function RegisterPage() {
           <div>
             <Label htmlFor="email" className="text-sm font-medium mb-1.5 block">Email</Label>
             <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="admin@classycollections.com" className="h-11" required />
-          </div>
+            </div>
 
-          <div>
-            <Label htmlFor="role" className="text-sm font-medium mb-1.5 block">Role</Label>
-            <Select value={form.role} onValueChange={(value) => setForm({ ...form, role: value })}>
-              <SelectTrigger className="h-11">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="super_admin">Super Admin - Full Access</SelectItem>
-                <SelectItem value="admin">Admin - Manage Products & Orders</SelectItem>
-                <SelectItem value="editor">Editor - Add & Edit Products</SelectItem>
-                <SelectItem value="viewer">Viewer - View Only</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+            {/* Role selector - hidden on first registration */}
+            <div className="hidden">
+              <Label className="text-sm font-medium mb-1.5 block">Role</Label>
+              <Select value={form.role} onValueChange={(value) => setForm({ ...form, role: value })}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="admin">Admin</SelectItem>
+                  <SelectItem value="editor">Editor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 p-3 rounded-sm">
+              <p className="text-xs text-blue-700 dark:text-blue-400 leading-relaxed">
+                <span className="font-semibold">First user setup:</span> You'll be assigned as Super Admin with full system access and ability to add team members.
+              </p>
+            </div>
+
 
           <div>
             <Label htmlFor="password" className="text-sm font-medium mb-1.5 block">Password</Label>
