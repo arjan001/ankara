@@ -67,6 +67,30 @@ export default function RegisterPage() {
       setLoading(false)
       return
     }
+
+    // Also create admin_users record
+    try {
+      const adminRes = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: form.email,
+          displayName: form.displayName,
+          role: form.role,
+          password: form.password,
+        }),
+      })
+      const adminData = await adminRes.json()
+      if (!adminRes.ok) {
+        setError(adminData.error || "Failed to create admin record")
+        setLoading(false)
+        return
+      }
+    } catch (err) {
+      console.error("[v0] Admin record creation failed:", err)
+      // Continue even if admin record fails - auth signup succeeded
+    }
+
     setSuccess(true)
     setLoading(false)
   }
