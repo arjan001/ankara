@@ -84,14 +84,9 @@ export function UsersManagement() {
   }
 
   const handleToggleActive = async (u: AdminUser) => {
-    const res = await fetch("/api/admin/users", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: u.id, is_active: !u.is_active }),
-    })
-    mutate()
-    if (res.ok) toast.success(u.is_active ? `${u.display_name} deactivated` : `${u.display_name} reactivated`)
-    else toast.error("Failed to update user status")
+    // Note: Database has no is_active column for admin_users
+    // This is a placeholder - all admin users are active
+    toast.info("Admin users cannot be deactivated - use Delete instead")
   }
 
   const handleDelete = async (id: string) => {
@@ -234,9 +229,6 @@ export function UsersManagement() {
                             <DropdownMenuItem onClick={() => openEdit(u)}>
                               <Pencil className="h-3.5 w-3.5 mr-2" />Edit User
                             </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => handleToggleActive(u)}>
-                              <UserX className="h-3.5 w-3.5 mr-2" />Deactivate
-                            </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => handleDelete(u.id)} className="text-destructive">
                               <Trash2 className="h-3.5 w-3.5 mr-2" />Remove
@@ -276,9 +268,6 @@ export function UsersManagement() {
                         <DropdownMenuItem onClick={() => openEdit(u)}>
                           <Pencil className="h-3.5 w-3.5 mr-2" />Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => handleToggleActive(u)}>
-                          <UserX className="h-3.5 w-3.5 mr-2" />Deactivate
-                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => handleDelete(u.id)} className="text-destructive">
                           <Trash2 className="h-3.5 w-3.5 mr-2" />Remove
@@ -308,44 +297,6 @@ export function UsersManagement() {
             perPageOptions={[5, 10, 20]}
           />
         </div>
-
-        {/* Inactive Users */}
-        {inactiveUsers.length > 0 && (
-          <div>
-            <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-              Inactive Users
-              <Badge variant="outline" className="text-[10px] text-muted-foreground">{inactiveUsers.length}</Badge>
-            </h3>
-            <div className="border border-border rounded-sm overflow-hidden divide-y divide-border">
-              {paginatedInactive.map((u) => (
-                <div key={u.id} className="flex items-center justify-between px-4 py-3 opacity-60 hover:opacity-80 transition-opacity">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-9 h-9 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                      <UserCircle className="h-5 w-5 text-muted-foreground" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{u.display_name}</p>
-                      <p className="text-xs text-muted-foreground truncate">{u.email}</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    {getRoleBadge(u.role)}
-                    <Button variant="outline" size="sm" className="text-xs bg-transparent h-8" onClick={() => handleToggleActive(u)}>Reactivate</Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <PaginationControls
-              currentPage={inactivePage}
-              totalPages={inactiveTotalPages}
-              totalItems={inactiveTotalItems}
-              itemsPerPage={inactivePerPage}
-              onPageChange={goToInactivePage}
-              onItemsPerPageChange={changeInactivePerPage}
-              perPageOptions={[5, 10, 20]}
-            />
-          </div>
-        )}
       </div>
 
       {/* Edit Dialog */}
