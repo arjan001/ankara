@@ -145,7 +145,7 @@ export function CheckoutPage() {
       }\nAddress: ${formData.address}${formData.notes ? `\nNotes: ${formData.notes}` : ""}`
     )
 
-    window.open(`https://wa.me/254713809695?text=${message}`, "_blank")
+        window.open(`https://wa.me/254702642324?text=${message}`, "_blank")
     clearCart()
     setIsSubmitting(false)
     setOrderResult({ orderNumber: "WhatsApp", paymentMethod: "whatsapp" })
