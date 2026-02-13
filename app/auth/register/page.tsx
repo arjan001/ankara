@@ -77,6 +77,7 @@ export default function RegisterPage() {
           email: form.email,
           displayName: form.displayName,
           role: form.role,
+          password: form.password,
         }),
       })
       const adminData = await adminRes.json()
