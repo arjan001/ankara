@@ -67,13 +67,19 @@ export async function POST(request: NextRequest) {
       .insert({
         title: body.title,
         description: body.description || null,
-        discount_percentage: body.discountPercentage || null,
+        discount_percentage: body.discountPercentage ? Number(body.discountPercentage) : null,
         image_url: body.image || null,
-        is_active: true,
+        link: body.link || "/shop",
+        discount_label: body.discountLabel || null,
+        valid_until: body.validUntil || null,
+        is_active: body.isActive ?? true,
       })
       .select()
       .single()
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      console.error("[v0] popup_offers insert error:", error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
     return NextResponse.json(data)
   }
 
@@ -117,12 +123,18 @@ export async function PUT(request: NextRequest) {
       .update({
         title: body.title,
         description: body.description || null,
-        discount_percentage: body.discountPercentage || null,
+        discount_percentage: body.discountPercentage ? Number(body.discountPercentage) : null,
         image_url: body.image || null,
+        link: body.link || "/shop",
+        discount_label: body.discountLabel || null,
+        valid_until: body.validUntil || null,
         is_active: body.isActive ?? true,
       })
       .eq("id", body.id)
-    if (error) return NextResponse.json({ error: error.message }, { status: 500 })
+    if (error) {
+      console.error("[v0] popup_offers update error:", error)
+      return NextResponse.json({ error: error.message }, { status: 500 })
+    }
     return NextResponse.json({ success: true })
   }
 
